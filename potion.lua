@@ -47,10 +47,10 @@ function _update60()
 	for i=0,7 do
 		local s=slots[i]
 		if coll(s,mx,my) and mp then -- If pressing over a slot.
-			if holding~=nil then -- Place vial into a slot.
+			if holding~=nil and s.v==nil then -- Place vial into a slot.
 				s.v=holding
 				holding=nil
-			else -- Pick up vial from slot.
+			elseif holding==nil and s.v~=nil then -- Pick up vial from slot.
 				holding=i
 				vox=s.x-mx
 				voy=s.y-my 
