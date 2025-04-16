@@ -36,12 +36,8 @@ function create_sim(x,y,w,h)
 			s:s(x1,y1,c)
 		end,
 		-- Checks is (x1,y1) is permeable by (x2,y2).
-		pos=function(s,x1,y1,x2,y2)
-			return s.perm(s:g(x1,y1),s:g(x2,y2))
-		end,
-		-- Checks if c2 is permeable by c1.
-		perm=function(c1,c2) 
-			return c2==0 or (c1==10 and c2==12)
+		perm=function(s,x1,y1,x2,y2)
+			return density[s:g(x1,y1)+1]>density[s:g(x2,y2)+1]
 		end,
 		-- Try to move cell (x1,y1) into cell (x2,y2)
 		try=function(s,x1,y1,x2,y2)
@@ -53,7 +49,7 @@ function create_sim(x,y,w,h)
 					s:s(x1,y1,0)
 					s:s(x2,y2,0)
 					return true
-				elseif s.perm(c1,c2) then -- Check for permeability, and swap if it works.
+				elseif density[c1+1]>density[c2+1] then -- Check for permeability, and swap if it works.
 					s:s(x1,y1,c2)
 					s:s(x2,y2,c1)
 					return true
@@ -65,6 +61,8 @@ function create_sim(x,y,w,h)
 	}
 end
 
+density={0,10,10,10,10,10,10,10,10,10,10,5,5,99,10,10}
+
 function update_sim(s) 
 	for x=0,s.w do
 		for y=s.h,0,-1 do
@@ -72,8 +70,8 @@ function update_sim(s)
 			if c~=0 and c~=13 then
 				-- Basic falling.
 				local fell=s:try(x,y,x,y+1) or 
-					(s:pos(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
-					(s:pos(x,y,x-1,y) and s:try(x,y,x-1,y+1))
+					(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
+					(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
 
 				-- Liquid horizontal movement.
                 if not fell and c==12 then
