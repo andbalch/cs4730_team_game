@@ -1,3 +1,5 @@
+density={0,10,10,10,4,10,10,10,10,10,10,5,5,99,10,10}
+
 function create_sim(x,y,w,h)
 	-- Make 2D array.
 	local b={}
@@ -61,8 +63,6 @@ function create_sim(x,y,w,h)
 	}
 end
 
-density={0,10,10,10,10,10,10,10,10,10,10,5,5,99,10,10}
-
 function update_sim(s) 
 	for x=0,s.w do
 		for y=s.h,0,-1 do
@@ -74,7 +74,7 @@ function update_sim(s)
 					(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
 
 				-- Liquid horizontal movement.
-                if not fell and c==12 then
+                if not fell and c~=10 then
 					local d=1
 					if y%2==0 then d=-1 end
 					moved=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)

@@ -43,7 +43,7 @@ function _update60()
 
 	-- Picking and placing vials.
 	for i=0,7 do
-		s=slots[i]
+		local s=slots[i]
 		if coll(s,mx,my) and mp then -- If pressing over a slot.
 			if holding~=nil then -- Place vial into a slot.
 				s.v=holding
@@ -75,7 +75,7 @@ function _draw()
 	
 	-- Draw vials in slots.
 	for i=0,7 do
-		s=slots[i]
+		local s=slots[i]
 		if s.v~=nil then
 			draw_sim(vials[s.v],s.x,s.y)
 		else 
