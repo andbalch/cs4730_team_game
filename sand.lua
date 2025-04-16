@@ -2,7 +2,7 @@ function create_sim(x,y,w,h)
 	-- Make 2D array.
 	local b={}
 	for cx=0,w-1 do
-		col={}
+		local col={}
 		for cy=0,h-1 do
 			col[cy]=sget(x+cx,y+cy)
 		end
@@ -24,24 +24,43 @@ function create_sim(x,y,w,h)
 		end,
 		-- Sets cell (x,y).
 		s=function(s,x,y,c)
-			col=s.b[x]
+			local col=s.b[x]
 			if(col~=null) then
 				col[y]=c
 			end
 		end,
 		-- Swaps (x1,y2) with (x2,y2).
-		sw=function(s,x1,y1,x2,y2)
-			c=s:g(x2,y2)
+		swap=function(s,x1,y1,x2,y2)
+			local c=s:g(x2,y2)
 			s:s(x2,y2,s:g(x1,y1))
 			s:s(x1,y1,c)
 		end,
-		-- Checks if (x,y) is permeable by cell c.
-		p=function(s,x,y,c) 
-			oc=s:g(x,y)
-			return oc==0 or (c==10 and oc==12)
+		-- Checks is (x1,y1) is permeable by (x2,y2).
+		pos=function(s,x1,y1,x2,y2)
+			return s.perm(s:g(x1,y1),s:g(x2,y2))
 		end,
-		update=function(s)
-			
+		-- Checks if c2 is permeable by c1.
+		perm=function(c1,c2) 
+			return c2==0 or (c1==10 and c2==12)
+		end,
+		-- Try to move cell (x1,y1) into cell (x2,y2)
+		try=function(s,x1,y1,x2,y2)
+			local c1,c2=s:g(x1,y1),s:g(x2,y2)	
+
+			if c2~=13 and c1~=c2 then
+				-- Acid destroys.
+				if (c1==11 or c2==11) and (c1~=0 and c2~=0) then
+					s:s(x1,y1,0)
+					s:s(x2,y2,0)
+					return true
+				elseif s.perm(c1,c2) then -- Check for permeability, and swap if it works.
+					s:s(x1,y1,c2)
+					s:s(x2,y2,c1)
+					return true
+				end
+			end
+
+			return false
 		end
 	}
 end
@@ -49,24 +68,18 @@ end
 function update_sim(s) 
 	for x=0,s.w do
 		for y=s.h,0,-1 do
-			c=s:g(x,y)
+			local c=s:g(x,y)
 			if c~=0 and c~=13 then
 				-- Basic falling.
-				if s:p(x,y+1,c) then
-					s:sw(x,y,x,y+1)
-                elseif s:p(x-1,y+1,c) and s:p(x-1,y,c) then
-					s:sw(x,y,x-1,y+1)
-				elseif s:p(x+1,y+1,c) and s:p(x+1,y,c) then
-					s:sw(x,y,x+1,y+1)
+				local fell=s:try(x,y,x,y+1) or 
+					(s:pos(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
+					(s:pos(x,y,x-1,y) and s:try(x,y,x-1,y+1))
+
 				-- Liquid horizontal movement.
-                elseif c==12 then
-					d=1
+                if not fell and c==12 then
+					local d=1
 					if y%2==0 then d=-1 end
-					if s:p(x+d,y,c) then
-						s:sw(x,y,x+d,y,c)
-					elseif s:p(x-d,y,c) then
-						s:sw(x,y,x-d,y,c)
-					end
+					moved=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
 				end 
 			end
 		end
@@ -76,7 +89,7 @@ end
 function draw_sim(s,dx,dy)
 	for x=0,s.w do
 		for y=0,s.h do
-			c=s:g(x,y)
+			local c=s:g(x,y)
 			sset(s.x+x,s.y+y,c)
 		end
 	end

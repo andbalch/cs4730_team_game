@@ -1,3 +1,7 @@
+-- Game variables.
+gold = 42
+
+-- Mouse variables.
 poke(0x5F2D, 1) -- Activate mouse.
 mx=0 -- Mouse coordinates.
 my=0
@@ -55,7 +59,9 @@ function _update60()
 
 	-- Vial-cauldron transfer.
 	b={x=16,y=64,w=32,h=32}
-	if col(b,mx,my)
+	if coll(b,mx,my) then
+		
+	end
 
 	-- Update previous mouse down.
 	mdp=md
@@ -83,7 +89,11 @@ function _draw()
 	end
 
 	-- Draw frame rate.
-	print(stat(7))
+	print(stat(7),112,0)
+
+	-- Print UI.
+	spr(4,0,0)
+	oprint(gold,9,1,10)
 
 	-- Draw mouse.
 	ms=1
@@ -96,4 +106,14 @@ end
 -- Checks if a point is within a box.
 function coll(b,x,y)
 	return x>=b.x and x<=b.x+b.w and y>=b.y and y<=b.y+b.h
+end
+
+-- Prints a string with an outline.
+function oprint(t,x,y,c)
+    for xx=-1,1 do
+        for yy=-1,1 do
+            print(t,x+xx,y+yy,1)
+        end      
+    end
+    print(t,x,y,c)
 end
