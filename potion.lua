@@ -14,9 +14,13 @@ voy=0
 caul1 = create_sim(0, 32,32,32)
 caul2 = create_sim(32,32,32,32)
 
+-- Vials and vial slots.
 vials={}
+slots={}
 for i=0,7 do
-	vials[i]=create_sim(64+i*8,32,8,8)
+	v=create_sim(64+i*8,32,8,8)
+	vials[i]=v
+	slots[i]={v=i,x=16+i*12,y=32,w=v.w,h=v.h}
 end
 
 function _update60()
@@ -33,20 +37,27 @@ function _update60()
 		update_sim(vials[i])
 	end
 
-	-- Vial movement.
+	-- Picking and placing vials.
 	for i=0,7 do
-		v=vials[i]
-		b={x=16+i*12,y=32,w=v.w,h=v.h} -- Collision box for vial in static position.
-		if coll(b,mx,my) and mp then -- Picking up vials.
-			if holding~=nil then holding=nil
-			else 
+		s=slots[i]
+		if coll(s,mx,my) and mp then -- If pressing over a slot.
+			if holding~=nil then -- Place vial into a slot.
+				s.v=holding
+				holding=nil
+			else -- Pick up vial from slot.
 				holding=i
-				vox=b.x-mx
-				voy=b.y-my 
+				vox=s.x-mx
+				voy=s.y-my 
+				s.v=nil
 			end
 		end
 	end
 
+	-- Vial-cauldron transfer.
+	b={x=16,y=64,w=32,h=32}
+	if col(b,mx,my)
+
+	-- Update previous mouse down.
 	mdp=md
 end
 
@@ -55,17 +66,23 @@ function _draw()
 
 	draw_sim(caul1, 16, 64)
 	draw_sim(caul2, 72, 64)
+	
+	-- Draw vials in slots.
 	for i=0,7 do
-		vx=16+i*12 -- Vial slot location.
-		vy=32
-		spr(88,vx,vy)
-		if holding==i then -- Draw vial near mouse if it's being held.
-			draw_sim(vials[i],mx+vox,my+voy)
-		else -- Otherwise, draw it in its slot.
-			draw_sim(vials[i],vx,vy)
+		s=slots[i]
+		if s.v~=nil then
+			draw_sim(vials[s.v],s.x,s.y)
+		else 
+			spr(3,s.x,s.y)
 		end		
 	end
-	
+
+	-- Draw the held vial near the mouse.
+	if holding~=nil then
+		draw_sim(vials[holding],mx+vox,my+voy)
+	end
+
+	-- Draw frame rate.
 	print(stat(7))
 
 	-- Draw mouse.

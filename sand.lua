@@ -1,4 +1,5 @@
 function create_sim(x,y,w,h)
+	-- Make 2D array.
 	local b={}
 	for cx=0,w-1 do
 		col={}
@@ -13,6 +14,7 @@ function create_sim(x,y,w,h)
 		w=w,
 		h=h,
 		b=b,
+		-- Gets cell (x,y).
 		g=function(s,x,y)
 			if (x>=0 and y>=0 and x<s.w and y<s.h) then
 				return s.b[x][y]
@@ -20,6 +22,7 @@ function create_sim(x,y,w,h)
 				return 0
 			end
 		end,
+		-- Sets cell (x,y).
 		s=function(s,x,y,c)
 			col=s.b[x]
 			if(col~=null) then
@@ -32,7 +35,7 @@ function create_sim(x,y,w,h)
 			s:s(x2,y2,s:g(x1,y1))
 			s:s(x1,y1,c)
 		end,
-		-- Checks if (x,y) is permeable by material c.
+		-- Checks if (x,y) is permeable by cell c.
 		p=function(s,x,y,c) 
 			oc=s:g(x,y)
 			return oc==0 or (c==10 and oc==12)
@@ -58,7 +61,7 @@ function update_sim(s)
 				-- Liquid horizontal movement.
                 elseif c==12 then
 					d=1
-					--if y%2==0 then d=-1 end
+					if y%2==0 then d=-1 end
 					if s:p(x+d,y,c) then
 						s:sw(x,y,x+d,y,c)
 					elseif s:p(x-d,y,c) then
