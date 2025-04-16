@@ -60,30 +60,10 @@ function _update60()
 	end
 
 	-- Vial-cauldron transfer.
-	b={x=16,y=64,w=32,h=32}
 	if holding~=nil then
-		if coll(caul1_box,mx,my) and md then
-			cx=mx-caul1_box.x-1+flr(rnd(3))
-			cy=my-caul2_box.y
-			if caul1:g(cx,cy)==0 then -- Make sure the cauldron spot is empty.
-				-- Iterate through cells in vial.
-				v=vials[holding]
-				for x=3,4 do
-					for y=1,6 do
-						-- If the cell is not empty, tranfer it over to the cauldron.
-						c=v:g(x,y)
-						if c~=0 then
-							v:s(x,y,0)
-							caul1:s(cx,cy,c)
-							goto transferred
-						end
-					end
-				end
-				::transferred::
-			end
-		end
+		transfer(caul1,caul1_box)
+		transfer(caul2,caul2_box)
 	end
-
 
 	-- Update previous mouse down.
 	mdp=md
@@ -123,7 +103,40 @@ function _draw()
 	spr(ms,mx,my)
 end
 
--- Utility functions.
+-- Game Procedures --
+
+-- Checks if vial is being pressed on cauldron and transfers pixels accordingly.
+function transfer(caul, box)
+	if coll(box,mx,my) and md then
+		local cx=mx-box.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
+		local cy=my-box.y
+
+		-- Iterate through cells in vial.
+		local v=vials[holding]
+		local cc=caul:g(cx,cy)
+		for x=3,4 do
+			for y=1,6 do
+				-- If the vial cell isn't empty and the cauldron cell is, tranfer it over to the cauldron.
+				local vc=v:g(x,y)
+				if vc~=0 and cc==0 then
+					v:s(x,y,0)
+					caul:s(cx,cy,vc)
+					goto transferred
+				-- If the cauldron cell isn't empty and the vial cell is, tranfer it over to the vial.
+				elseif vc==0 and cc~=0 then
+					v:s(x,y,cc)
+					caul:s(cx,cy,0)
+					goto transferred
+				end
+			end
+		end
+		::transferred::
+
+	end
+end
+
+
+-- Utility Functions --
 
 -- Checks if a point is within a box.
 function coll(b,x,y)
