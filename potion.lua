@@ -15,6 +15,8 @@ vox=0 -- Vial offset from the mouse.
 voy=0
 
 -- Create simulations.
+caul1_box={x=16,y=64,w=32,h=32}
+caul2_box={x=72,y=64,w=32,h=32}
 caul1 = create_sim(0, 32,32,32)
 caul2 = create_sim(32,32,32,32)
 
@@ -59,9 +61,29 @@ function _update60()
 
 	-- Vial-cauldron transfer.
 	b={x=16,y=64,w=32,h=32}
-	if coll(b,mx,my) then
-		
+	if holding~=nil then
+		if coll(caul1_box,mx,my) and md then
+			cx=mx-caul1_box.x-1+flr(rnd(3))
+			cy=my-caul2_box.y
+			if caul1:g(cx,cy)==0 then -- Make sure the cauldron spot is empty.
+				-- Iterate through cells in vial.
+				v=vials[holding]
+				for x=3,4 do
+					for y=1,6 do
+						-- If the cell is not empty, tranfer it over to the cauldron.
+						c=v:g(x,y)
+						if c~=0 then
+							v:s(x,y,0)
+							caul1:s(cx,cy,c)
+							goto transferred
+						end
+					end
+				end
+				::transferred::
+			end
+		end
 	end
+
 
 	-- Update previous mouse down.
 	mdp=md
@@ -92,8 +114,8 @@ function _draw()
 	print(stat(7),112,0)
 
 	-- Print UI.
-	spr(4,0,0)
-	oprint(gold,9,1,10)
+	--spr(4,0,0)
+	--oprint(gold,9,1,10)
 
 	-- Draw mouse.
 	ms=1
