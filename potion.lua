@@ -24,7 +24,7 @@ caul2 = create_sim(32,32,32,32)
 vials={}
 slots={}
 for i=0,7 do
-	v=create_sim(64+i*8,32,8,8)
+	v=create_sim(64+i*8,32,8,16)
 	vials[i]=v
 	slots[i]={v=i,x=16+i*12,y=32,w=v.w,h=v.h}
 end
@@ -81,13 +81,13 @@ function _draw()
 		if s.v~=nil then
 			draw_sim(vials[s.v],s.x,s.y)
 		else 
-			spr(3,s.x,s.y)
+			spr(5,s.x,s.y,1,2)
 		end		
 	end
 
 	-- Draw the held vial near the mouse.
 	if holding~=nil then
-		draw_sim(vials[holding],mx+vox,my+voy)
+		--draw_sim(vials[holding],mx+vox,my+voy)
 	end
 
 	-- Draw frame rate.
@@ -115,7 +115,7 @@ function transfer(caul, box)
 		local v=vials[holding]
 		local cc=caul:g(cx,cy)
 		for x=3,4 do
-			for y=1,6 do
+			for y=1,14 do
 				-- If the vial cell isn't empty and the cauldron cell is, tranfer it over to the cauldron.
 				local vc=v:g(x,y)
 				if vc~=0 and cc==0 then
