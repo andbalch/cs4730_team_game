@@ -1,4 +1,4 @@
-mode="brew"
+mode="menu"
 
 -- Mouse variables.
 poke(0x5F2D, 1) -- Activate mouse.
@@ -72,8 +72,6 @@ function setup_game()
 	order_i = new_order()
 end
 
-setup_game()
-
 function _update60()
     -- Get mouse input.
 	mx=stat(32)
@@ -81,15 +79,16 @@ function _update60()
 	md=stat(34)==1
 	mp=md and not mdp
 
-	-- Update simulations.
-    update_sim(caul1)
-	update_sim(caul2)
-	for i=0,7 do
-		update_sim(vials[i])
-	end
-
     -- Screen specific updates.
-    if mode=="brew" then
+	if mode=="menu" then
+		update_menu()
+    elseif mode=="brew" then
+		-- Update simulations.
+		update_sim(caul1)
+		update_sim(caul2)
+		for i=0,7 do
+			update_sim(vials[i])
+		end
         brew_update()
     elseif mode=="shop" then
         shop_update()
@@ -97,10 +96,12 @@ function _update60()
 end
 
 function _draw()
-    cls(0)
+    	cls(0)
 
     -- Screen specific draws.
-    if mode=="brew" then
+	if mode=="menu" then	
+		menu_draw()
+    elseif mode=="brew" then
         brew_draw()
     elseif mode=="shop" then
         shop_draw()
