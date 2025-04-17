@@ -55,6 +55,11 @@ function brew_draw()
 		end		
 	end
 
+	-- Draw shelves
+	for i=0,7,2 do
+		spr(160,slots[i].x - 6,slots[i].y + 2,4,2)
+	end
+
 	-- Draw the held vial near the mouse.
 	if holding~=nil then
 		draw_sim(vials[holding],mx+vox,my+voy)
