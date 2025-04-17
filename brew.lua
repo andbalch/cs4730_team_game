@@ -127,8 +127,17 @@ function transfer(caul, box)
 end
 
 function serve()
-	-- TODO: empty vial, calc points and transition to next order
+	-- Empty vial
+	empty_vial()
 
+	-- TODO: Calc points
+
+	-- Transition to next order
+	order_i = new_order(11)
+	-- TODO: New wizard?
+end
+
+function empty_vial()
 	-- Empty vial by slightly modifying the code used for transfer()
 	local cx=mx-cust.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
 	local cy=my-cust.y

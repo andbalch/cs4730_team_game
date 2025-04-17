@@ -37,6 +37,11 @@ potions = {
 	{c=1, n="Holy\nTears"},			-- <- fortified runes (4) + sweat of newt (3)
 	{c=10, n="Liquid\nAlgorithms"},	-- <- fenwick tree (9) + holy tears (1)
 }
+pot_lim = 11
+-- Generates a new order randomly
+function new_order()
+	return flr(rnd(pot_lim)) + 1
+end
 
 -- Sets up variables for a game.
 function setup_game()
@@ -64,7 +69,7 @@ function setup_game()
 	end
 
 	-- generate order
-	order_i = flr(rnd(11)) + 1
+	order_i = new_order()
 end
 
 setup_game()
