@@ -27,6 +27,16 @@ function brew_update()
 end
 
 function brew_draw()
+	-- Draw wizard.
+	local ws=7+4*(flr(t()*2)%2)
+	spr(ws,8,8,4,4)
+	spr(ws,8,48,4,4)
+	spr(ws,48,8,4,4)
+	spr(ws,48,48,4,4)
+
+	-- Draw shop button.
+	spr(132,84,8,4,2)
+
 	-- Draw cauldrons.
 	draw_sim(caul1, caul1_box.x, caul1_box.y)
 	draw_sim(caul2, caul2_box.x, caul2_box.y)
@@ -50,12 +60,14 @@ function brew_draw()
 		draw_sim(vials[holding],mx+vox,my+voy)
 	end
 
+
+
 	-- Draw frame rate.
 	print(stat(7),112,0)
 
 	-- Print UI.
-	--spr(4,0,0)
-	--oprint(gold,9,1,10)
+	spr(4,0,0)
+	oprint(gold,9,1,10)
 end
 
 -- Procedures --
@@ -82,7 +94,7 @@ function transfer(caul, box)
 						caul:s(cx,cy,vc)
 						goto transferred
 					-- If the cauldron cell isn't empty and the vial cell is, tranfer it over to the vial.
-					elseif vc==0 and cc~=0 then
+					elseif vc==0 and cc~=0 and cc~=13 then
 						v:s(x,y,cc)
 						caul:s(cx,cy,0)
 						goto transferred
