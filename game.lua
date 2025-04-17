@@ -110,7 +110,7 @@ end
 function oprint(t,x,y,c)
     for xx=-1,1 do
         for yy=-1,1 do
-            print(t,x+xx,y+yy,1)
+            print(t,x+xx,y+yy,13)
         end      
     end
     print(t,x,y,c)
