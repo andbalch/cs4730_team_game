@@ -1,6 +1,6 @@
 function brew_update()
 
-	-- Picking and placing vials.
+	-- Picking, placing, and serving vials.
 	for i=0,7 do
 		local s=slots[i]
 		if coll(s,mx,my) and mp then -- If pressing over a slot.
@@ -12,6 +12,10 @@ function brew_update()
 				vox=s.x-mx
 				voy=s.y-my 
 				s.v=nil
+			end
+		elseif coll(cust,mx,my) and mp then -- If pressing over customer
+			if holding~=nil then -- Serve vial to customer
+				serve()
 			end
 		end
 	end
@@ -36,9 +40,9 @@ function brew_draw()
 
 	-- Big wizard?
 	local ws=56+32*(flr(t()*2)%2)
-	sspr(ws, 0, 32, 32, 12, 12, 64, 64)
+	sspr(ws, 0, 32, 32, cust.x, cust.y, cust.w, cust.h)
 	-- He's in a window!
-	sspr(64, 64, 32, 32, 12, 12, 64, 64)
+	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
 	-- Draw shop button.
 	spr(132,84,8,4,2)
@@ -78,11 +82,11 @@ function brew_draw()
 	spr(4,0,0)
 	oprint(gold,9,1,10)
 
-	-- Generate and display order
+	-- Display current order
 	-- spr(192, 0, 16, 4, 4)
 	sspr(64, 96, 32, 32, 0, 9, 44, 44)
 	oprint(potions[order_i].n, 3, 16, potions[order_i].c)
-	-- TODO: Timer 
+	-- TODO: Timer countdown until penalty occurs
 	oprint("0:52", 54, 1, 6)
 end
 
@@ -120,6 +124,29 @@ function transfer(caul, box)
 		end
 		::transferred::
 	end
+end
+
+function serve()
+	-- TODO: empty vial, calc points and transition to next order
+
+	-- Empty vial by slightly modifying the code used for transfer()
+	local cx=mx-cust.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
+	local cy=my-cust.y
+	local v=vials[holding]
+	for y=0,v.h-1 do
+		local wc=0 -- Wall count.
+		for x=0,v.w-1 do
+			local vc=v:g(x,y)
+			if vc==13 then 
+				wc=wc+1
+			elseif wc==1 then -- Ensure the pixels are in the vial (i.e. wall count = 1).
+				-- If the vial cell isn't empty, remove content.
+				if vc~=0 then
+					v:s(x,y,0)
+				end 
+			end 
+		end
+	end 
 end
 
 -- Draws fire under a given cauldron box.

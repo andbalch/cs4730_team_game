@@ -8,6 +8,14 @@ md=false -- Mouse down.
 mdp=false -- Mouse down previous.
 mp=false -- Mouse pressed.
 
+-- Customer region, used for painting sprite and serving potions
+cust = {
+	x=12,
+	y=12,
+	w=64,
+	h=64
+}
+
 potions = {
 	-- Roughly ordered by difficulty
 	-- 1st order potion: Req. only primary ingredients (water and fairy dust)
