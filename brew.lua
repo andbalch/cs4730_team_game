@@ -77,6 +77,10 @@ function brew_draw()
 	-- Print UI.
 	spr(4,0,0)
 	oprint(gold,9,1,10)
+	oprint("0:52", 54, 1, 6)
+	-- spr(192, 0, 16, 4, 4)
+	sspr(64, 96, 32, 32, 0, 9, 44, 44)
+	oprint("Liquid\nAlgorithms", 3, 16, 11)
 end
 
 -- Procedures --
