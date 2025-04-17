@@ -8,6 +8,28 @@ md=false -- Mouse down.
 mdp=false -- Mouse down previous.
 mp=false -- Mouse pressed.
 
+potions = {
+	-- Roughly ordered by difficulty
+	-- 1st order potion: Req. only primary ingredients (water and fairy dust)
+	{c=15, n="Wyrmwood\nOil"},		-- <- water (12) + fairy dust (14)
+
+	-- 2nd order potion: Req. primary ingredients and 1st order potion
+	{c=7, n="Caustic\nDreams"},		-- <- water (12) + wyrmwood oil (15)
+	{c=4, n="Fortified\nRunes"},		-- <- fairy dust (14) + wyrmwood oil (15)
+
+	-- 3rd order potion: Req. primary ingredients and 2nd order potion
+	{c=5, n="Gaseous\nMateria"},		-- <- water (12) + fortified runes (4)
+	{c=8, n="Dragon's\nBlood"},		-- <- fairy dust (14) + caustic dreams (7)
+	{c=2, n="Spesi\nCola"},			-- <- water (12) + caustic dreams (7)
+
+	-- 4th order potion: No primary ingredients
+	{c=3, n="Sweat of\nNewt"},		-- <- wyrmwood oil (15) + gaseous materia (5)
+	{c=6, n="Dew of\nMiasma"},		-- <- caustic dreams (7) + gaseous materia (5)
+	{c=9, n="Fenwick\nTree"},		-- <- fortified runes (4) + spesi cola (2)
+	{c=1, n="Holy\nTears"},			-- <- fortified runes (4) + sweat of newt (3)
+	{c=10, n="Liquid\nAlgorithms"},	-- <- fenwick tree (9) + holy tears (1)
+}
+
 -- Sets up variables for a game.
 function setup_game()
     -- Game variables.
@@ -32,6 +54,9 @@ function setup_game()
 		vials[i]=v
 		slots[i]={v=i,x=88+(i%2)*12,y=32+flr(i/2)*24,w=v.w,h=v.h}
 	end
+
+	-- generate order
+	order_i = flr(rnd(11)) + 1
 end
 
 setup_game()

@@ -1,25 +1,3 @@
-potions = {
-	-- Roughly ordered by difficulty
-	-- 1st order potion: Req. only primary ingredients (water and fairy dust)
-	{c=15, n="Wyrmwood Oil"},		-- <- water (12) + fairy dust (14)
-
-	-- 2nd order potion: Req. primary ingredients and 1st order potion
-	{c=7, n="Caustic Dreams"},		-- <- water (12) + wyrmwood oil (15)
-	{c=4, n="Fortified Runes"},		-- <- fairy dust (14) + wyrmwood oil (15)
-
-	-- 3rd order potion: Req. primary ingredients and 2nd order potion
-	{c=5, n="Gaseous Materia"},		-- <- water (12) + fortified runes (4)
-	{c=8, n="Dragon's Blood"},		-- <- fairy dust (14) + caustic dreams (7)
-	{c=2, n="Spesi Cola"},			-- <- water (12) + caustic dreams (7)
-
-	-- 4th order potion: No primary ingredients
-	{c=3, n="Sweat of Newt"},		-- <- wyrmwood oil (15) + gaseous materia (5)
-	{c=6, n="Dew of Miasma"},		-- <- caustic dreams (7) + gaseous materia (5)
-	{c=9, n="Fenwick Tree"},		-- <- fortified runes (4) + spesi cola (2)
-	{c=1, n="Holy Tears"},			-- <- fortified runes (4) + sweat of newt (3)
-	{c=10, n="Liquid Algorithms"},	-- <- fenwick tree (9) + holy tears (1)
-}
-
 function brew_update()
 
 	-- Picking and placing vials.
@@ -99,10 +77,13 @@ function brew_draw()
 	-- Print UI.
 	spr(4,0,0)
 	oprint(gold,9,1,10)
-	oprint("0:52", 54, 1, 6)
+
+	-- Generate and display order
 	-- spr(192, 0, 16, 4, 4)
 	sspr(64, 96, 32, 32, 0, 9, 44, 44)
-	oprint("Placeholder\nText", 3, 16, 11)
+	oprint(potions[order_i].n, 3, 16, potions[order_i].c)
+	-- TODO: Timer 
+	oprint("0:52", 54, 1, 6)
 end
 
 -- Procedures --
