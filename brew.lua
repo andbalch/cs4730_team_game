@@ -28,11 +28,17 @@ end
 
 function brew_draw()
 	-- Draw wizard.
-	local ws=7+4*(flr(t()*2)%2)
-	spr(ws,8,8,4,4)
-	spr(ws,8,48,4,4)
-	spr(ws,48,8,4,4)
-	spr(ws,48,48,4,4)
+	-- local ws=7+4*(flr(t()*2)%2)
+	-- spr(ws,8,8,4,4)
+	-- spr(ws,8,48,4,4)
+	-- spr(ws,48,8,4,4)
+	-- spr(ws,48,48,4,4)
+
+	-- Big wizard?
+	local ws=56+32*(flr(t()*2)%2)
+	sspr(ws, 0, 32, 32, 12, 12, 64, 64)
+	-- He's in a window!
+	sspr(64, 64, 32, 32, 12, 12, 64, 64)
 
 	-- Draw shop button.
 	spr(132,84,8,4,2)
@@ -64,8 +70,6 @@ function brew_draw()
 	if holding~=nil then
 		draw_sim(vials[holding],mx+vox,my+voy)
 	end
-
-
 
 	-- Draw frame rate.
 	print(stat(7),112,0)
