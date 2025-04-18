@@ -156,7 +156,10 @@ function serve()
 	-- TODO: inc. points based on potion difficulty?
 	local score = flr(empty_vial(potions[order_i].c) * 100)
 
-	-- TODO: Penalty if time limit exceeded
+	-- Penalty if time limit exceeded
+	if time_c == 8 then 
+		score = score * (1 - time_penalty)
+	end
 
 	-- Inc. score
 	gold = gold + score

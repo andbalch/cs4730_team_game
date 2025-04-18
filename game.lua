@@ -38,7 +38,8 @@ potions = {
 	{c=10, n="Liquid\nAlgorithms"},	-- <- fenwick tree (9) + holy tears (1)
 }
 pot_lim = 11
-time_lim = 5
+time_lim = 60
+time_penalty = 0.10
 
 pot_timer = t();
 time_str = ""
