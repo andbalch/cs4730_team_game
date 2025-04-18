@@ -1,4 +1,4 @@
-setup_menu()
+mode="title"
 
 -- Mouse variables.
 poke(0x5F2D, 1) -- Activate mouse.
@@ -87,8 +87,8 @@ function _update60()
 	mp=md and not mdp
 
     -- Screen specific updates.
-	if mode=="menu" then
-		update_menu()
+	if mode=="title" then
+		title_update()
     elseif mode=="brew" then
 		-- Update simulations.
         brew_update()
@@ -101,8 +101,8 @@ function _draw()
     	cls(0)
 
     -- Screen specific draws.
-	if mode=="menu" then	
-		menu_draw()
+	if mode=="title" then	
+		title_draw()
     elseif mode=="brew" then
         brew_draw()
     elseif mode=="shop" then
