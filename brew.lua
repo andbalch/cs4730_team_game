@@ -21,6 +21,7 @@ function brew_update()
 			end
 		elseif coll(cust,mx,my) and mp then -- If pressing over customer
 			if holding~=nil then -- Serve vial to customer
+				-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
 				serve()
 			end
 		end
@@ -133,21 +134,29 @@ function transfer(caul, box)
 end
 
 function serve()
-	-- Empty vial
-	empty_vial()
+	-- Empty vial and calc. score
+	-- TODO: inc. points based on potion difficulty?
+	local score = flr(empty_vial(potions[order_i].c) * 100)
 
-	-- TODO: Calc points
+	-- TODO: Penalty if time limit exceeded
+
+	-- Inc. score
+	gold = gold + score
 
 	-- Transition to next order
-	order_i = new_order(11)
+	order_i = new_order()
+
 	-- TODO: New wizard?
 end
 
-function empty_vial()
-	-- Empty vial by slightly modifying the code used for transfer()
+-- Sets pixels in the currently-held vial to 0, Returns % purity of the potion rel. to c, not accounting for overall volume (i.e. empty space)
+function empty_vial(c)
+	-- Empty vial by slightly modifying the code used for transfer().
 	local cx=mx-cust.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
 	local cy=my-cust.y
 	local v=vials[holding]
+	local count = 0
+	local correct = 0
 	for y=0,v.h-1 do
 		local wc=0 -- Wall count.
 		for x=0,v.w-1 do
@@ -157,11 +166,21 @@ function empty_vial()
 			elseif wc==1 then -- Ensure the pixels are in the vial (i.e. wall count = 1).
 				-- If the vial cell isn't empty, remove content.
 				if vc~=0 then
+					-- Check if potion is correct
+					count = count + 1
+					if vc == c then 
+						correct = correct + 1
+					end
 					v:s(x,y,0)
 				end 
 			end 
 		end
 	end 
+	if count == 0 then 
+		-- avoid bugs induced by dividing by 0
+		count = 1
+	end
+	return correct/count
 end
 
 -- Draws fire under a given cauldron box.
