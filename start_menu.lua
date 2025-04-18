@@ -13,3 +13,8 @@ function update_menu()
         -- Initialize game state
     end
 end
+
+function setup_menu()
+    -- Initialize menu state
+    mode = "menu"
+end

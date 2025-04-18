@@ -1,4 +1,10 @@
 function brew_update()
+	-- update particles
+	update_sim(caul1)
+	update_sim(caul2)
+	for i=0,7 do
+		update_sim(vials[i])
+	end
 
 	-- Picking, placing, and serving vials.
 	for i=0,7 do

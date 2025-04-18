@@ -1,4 +1,4 @@
-mode="menu"
+setup_menu()
 
 -- Mouse variables.
 poke(0x5F2D, 1) -- Activate mouse.
@@ -84,11 +84,6 @@ function _update60()
 		update_menu()
     elseif mode=="brew" then
 		-- Update simulations.
-		update_sim(caul1)
-		update_sim(caul2)
-		for i=0,7 do
-			update_sim(vials[i])
-		end
         brew_update()
     elseif mode=="shop" then
         shop_update()
