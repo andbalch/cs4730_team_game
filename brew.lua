@@ -1,5 +1,10 @@
+-- Constants.
+caul1_box={x=8,y=88,w=32,h=32}
+caul2_box={x=48,y=88,w=32,h=32}
+shop_box={x=84,y=8,w=32,h=16}
+
 function brew_update()
-	-- update particles
+	-- Update simulations.
 	update_sim(caul1)
 	update_sim(caul2)
 	for i=0,7 do
@@ -19,11 +24,9 @@ function brew_update()
 				voy=s.y-my 
 				s.v=nil
 			end
-		elseif coll(cust,mx,my) and mp then -- If pressing over customer
-			if holding~=nil then -- Serve vial to customer
-				-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
-				serve()
-			end
+		elseif holding~=nill and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
+			-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
+			serve()
 		end
 	end
 
@@ -31,6 +34,11 @@ function brew_update()
 	if holding~=nil then
 		transfer(caul1,caul1_box)
 		transfer(caul2,caul2_box)
+	end
+
+	-- Clicking shop button.
+	if mp and coll(shop_box, mx, my) then
+		mode="shop"
 	end
 
 	-- Update previous mouse down.
@@ -52,15 +60,15 @@ function brew_draw()
 	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
 	-- Draw shop button.
-	spr(132,84,8,4,2)
+	spr(132,shop_box.x,shop_box.y,4,2)
 
 	-- Draw cauldrons.
 	draw_sim(caul1, caul1_box.x, caul1_box.y)
 	draw_sim(caul2, caul2_box.x, caul2_box.y)
 
 	-- Draw fire under cauldron.
-	--draw_fire(caul1_box)
-	--draw_fire(caul2_box)
+	draw_fire(caul1_box)
+	draw_fire(caul2_box)
 	
 	-- Draw vials in slots.
 	for i=0,7 do
@@ -85,7 +93,7 @@ function brew_draw()
 	-- Draw frame rate.
 	print(stat(7),112,0)
 
-	-- Print UI.
+	-- Draw gold count.
 	spr(4,0,0)
 	oprint(gold,9,1,10)
 
@@ -117,7 +125,7 @@ end
 
 -- Procedures --
 
--- Checks if vial is being pressed on cauldron and transfers pixels accordingly.
+-- Checks if vial is being pressed on cauldron and transfers cells accordingly.
 function transfer(caul, box)
 	if coll(box,mx,my) and md then
 		local cx=mx-box.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
@@ -132,7 +140,7 @@ function transfer(caul, box)
 				local vc=v:g(x,y)
 				if vc==13 then 
 					wc=wc+1
-				elseif wc==1 then -- Ensure the pixels are in the vial (i.e. wall count = 1).
+				elseif wc==1 then -- Ensure the cells are in the vial (i.e. wall count = 1).
 					-- If the vial cell isn't empty and the cauldron cell is, tranfer it over to the cauldron.
 					if vc~=0 and cc==0 then
 						v:s(x,y,0)
@@ -174,47 +182,40 @@ function serve()
 	-- TODO: New wizard?
 end
 
--- Sets pixels in the currently-held vial to 0, Returns % purity of the potion rel. to c, not accounting for overall volume (i.e. empty space)
+-- Sets cells in the currently-held vial to 0, Returns % purity (number of target cells over total vial space).
 function empty_vial(c)
 	-- Empty vial by slightly modifying the code used for transfer().
-	local cx=mx-cust.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
-	local cy=my-cust.y
 	local v=vials[holding]
-	local count = 0
-	local correct = 0
+	local total = 0
+	local target = 0
 	for y=0,v.h-1 do
 		local wc=0 -- Wall count.
 		for x=0,v.w-1 do
 			local vc=v:g(x,y)
 			if vc==13 then 
 				wc=wc+1
-			elseif wc==1 then -- Ensure the pixels are in the vial (i.e. wall count = 1).
-				-- If the vial cell isn't empty, remove content.
-				if vc~=0 then
-					-- Check if potion is correct
-					count = count + 1
-					if vc == c then 
-						correct = correct + 1
-					end
-					v:s(x,y,0)
+			elseif wc==1 then -- Ensure the cells are in the vial (i.e. wall count = 1).
+				-- If the vial cell is target, count
+				if vc == c then
+					target=target+1
 				end 
+				v:s(x,y,0) -- Empty the cell.
+				total=total+1
 			end 
 		end
 	end 
-	if count == 0 then 
-		-- avoid bugs induced by dividing by 0
-		count = 1
-	end
-	return correct/count
+
+	count=max(1,count) -- Avoids divide by zero.
+	return target/total
 end
 
 -- Draws fire under a given cauldron box.
 function draw_fire(box)
 	local xo=box.x+box.w/4
 	local yo=box.y+box.h
-	for i=0,10 do
+	for i=0,20 do
 		local x=xo+rnd(box.w/2)
-		local y=yo+rnd(4)
+		local y=yo+rnd(3)
 		local r=1+flr(rnd(2))
 		local c=8+flr(rnd(3))
 		circfill(x,y,r,c)

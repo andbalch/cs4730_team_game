@@ -4,7 +4,7 @@ __lua__
 #include simulation.lua
 #include brew.lua
 #include shop.lua
-#include start_menu.lua
+#include title.lua
 #include game.lua
 __gfx__
 0000000077000000000000000000000009aaa9000100001001000010000000000000011000000000000000000000000000000110000000000000000000000000

@@ -60,8 +60,6 @@ function setup_game()
 	voy=0
 
 	-- Create simulations.
-	caul1_box={x=8,y=88,w=32,h=32}
-	caul2_box={x=48,y=88,w=32,h=32}
 	caul1 = create_sim(0, 32,32,32)
 	caul2 = create_sim(32,32,32,32)
 

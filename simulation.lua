@@ -1,7 +1,7 @@
 density={0,10,10,10,4,10,10,10,10,10,10,5,5,99,10,10}
 
 function create_sim(x,y,w,h)
-	-- Make 2D array.
+	-- Make 2D buffer.
 	local b={}
 	for cx=0,w-1 do
 		local col={}
@@ -10,6 +10,7 @@ function create_sim(x,y,w,h)
 		end
 		b[cx]=col
 	end
+
 	return {
 		x=x,
 		y=y,
