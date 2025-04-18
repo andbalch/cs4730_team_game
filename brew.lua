@@ -166,6 +166,7 @@ function serve()
 
 	-- Transition to next order
 	order_i = new_order()
+	
 	-- Set timer
 	-- TODO: variable time limits?
 	pot_timer = t()

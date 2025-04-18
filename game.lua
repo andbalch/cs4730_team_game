@@ -41,7 +41,7 @@ pot_lim = 11
 time_lim = 60
 time_penalty = 0.10
 
-pot_timer = t();
+pot_timer = 0;
 time_str = ""
 time_c = 6
 -- Generates a new order randomly
@@ -76,6 +76,7 @@ function setup_game()
 
 	-- generate order
 	order_i = new_order()
+	pot_timer = t()
 end
 
 function _update60()
