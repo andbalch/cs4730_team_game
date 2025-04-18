@@ -38,6 +38,11 @@ potions = {
 	{c=10, n="Liquid\nAlgorithms"},	-- <- fenwick tree (9) + holy tears (1)
 }
 pot_lim = 11
+time_lim = 5
+
+pot_timer = t();
+time_str = ""
+time_c = 6
 -- Generates a new order randomly
 function new_order()
 	return flr(rnd(pot_lim)) + 1

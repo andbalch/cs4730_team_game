@@ -93,8 +93,26 @@ function brew_draw()
 	-- spr(192, 0, 16, 4, 4)
 	sspr(64, 96, 32, 32, 0, 9, 44, 44)
 	oprint(potions[order_i].n, 3, 16, potions[order_i].c)
-	-- TODO: Timer countdown until penalty occurs
-	oprint("0:52", 54, 1, 6)
+
+	-- Timer countdown until penalty occurs
+	time_str = ""
+	local d_t = flr((t() - pot_timer) * 3) -- '*3' roughly controls for how pico8 handles time, given update runs 30 times per sec
+	if (d_t < time_lim) then
+		d_t = time_lim - d_t
+		time_c = 6
+	else
+		-- out of time!!
+		time_str = time_str .. "-"
+		time_c = 8
+	end
+	local min = flr(d_t / 60)
+	local sec = d_t % 60
+	time_str = time_str .. min .. ":"
+	if (sec < 10) then
+		time_str = time_str .. "0"
+	end
+	time_str = time_str .. sec
+	oprint(time_str, 54, 1, time_c)
 end
 
 -- Procedures --
@@ -145,6 +163,9 @@ function serve()
 
 	-- Transition to next order
 	order_i = new_order()
+	-- Set timer
+	-- TODO: variable time limits?
+	pot_timer = t()
 
 	-- TODO: New wizard?
 end
