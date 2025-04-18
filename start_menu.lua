@@ -1,6 +1,8 @@
 function menu_draw()
-    print("My Cool Game", 40, 40, 7)
-    print("Press ❎ to Start", 34, 60, 6)
+    print("press     to start", 30, 80, 6)
+    print("❎", 56, 80, 11)
+    print("place", 55, 65, 1)
+    spr(192, 31, 30, 8, 4)
 end
 
 function update_menu()
