@@ -82,7 +82,7 @@ function _update60()
 	mx=stat(32)
 	my=stat(33)
 	md=stat(34)==1
-	mp=md and not mdp
+	mp=mdp and not md
 
     -- Screen specific updates.
 	if mode=="title" then
@@ -93,6 +93,9 @@ function _update60()
     elseif mode=="shop" then
         shop_update()
     end
+
+	-- Update mouse down previous.
+	mdp=md
 end
 
 function _draw()

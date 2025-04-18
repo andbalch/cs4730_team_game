@@ -40,9 +40,6 @@ function brew_update()
 	if mp and coll(shop_box, mx, my) then
 		mode="shop"
 	end
-
-	-- Update previous mouse down.
-	mdp=md
 end
 
 function brew_draw()
