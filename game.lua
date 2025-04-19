@@ -8,6 +8,10 @@ md=false -- Mouse down.
 mdp=false -- Mouse down previous.
 mp=false -- Mouse pressed.
 
+-- Error variables.
+error_str=nil
+error_timer=0
+
 -- Customer region, used for painting sprite and serving potions
 cust = {
 	x=12,
@@ -106,6 +110,9 @@ function _update60()
 	md=stat(34)==1
 	mp=mdp and not md
 
+	-- Update error timer.
+	error_timer=error_timer-1
+
 	-- Update simulations.
 	update_sim(caul1)
 	update_sim(caul2)
@@ -139,13 +146,24 @@ function _draw()
         shop_draw()
     end
 
+	-- Draw error.
+	if error_timer>=0 then
+		rectfill(0,119,128,128,8)
+		print(error_str,2,121,7)
+	end
 	-- Draw mouse.
 	ms=1
 	if md or holding then ms=2 end
 	spr(ms,mx,my)
+
 end
 
 -- Utility Functions --
+
+function error(str)
+	error_str=str
+	error_timer=30
+end
 
 -- Checks if a point is within a box.
 function coll(b,x,y)

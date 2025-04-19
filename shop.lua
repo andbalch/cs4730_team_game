@@ -67,5 +67,7 @@ function buy_vial(c)
     local p=prices[c]
     if gold>=p then
         gold=gold-prices[c]
+    else
+        error("too poor!")
     end
 end
