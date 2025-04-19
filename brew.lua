@@ -117,7 +117,6 @@ function brew_draw()
 
 	-- Draw currently viewed cell.
 	rectfill(0,119,128,128,2)
-	print(viewing)
 	if viewing~=nil then
 		oprint(names[viewing+1],2,121,viewing)
 	end
