@@ -17,8 +17,8 @@ function title_update()
 
     -- Go to game.
     if btnp(5) or md then -- ❎ key
-        mode = "brew"
         setup_game()
+        mode = "brew"
     end
 end
 

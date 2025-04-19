@@ -1,28 +1,29 @@
 -- Constants.
-caul1_box={x=8,y=88,w=32,h=32}
-caul2_box={x=48,y=88,w=32,h=32}
-shop_box={x=84,y=8,w=32,h=16}
+caul1_box={x=8,y=80,w=32,h=32}
+caul2_box={x=48,y=80,w=32,h=32}
+shop_box={x=82,y=4,w=32,h=16}
+
+-- Variables.
+viewing=nil
 
 function brew_update()
-	-- Update simulations.
-	update_sim(caul1)
-	update_sim(caul2)
-	for i=0,7 do
-		update_sim(vials[i])
-	end
+	viewing=nil
 
 	-- Picking, placing, and serving vials.
 	for i=0,7 do
 		local s=slots[i]
-		if coll(s,mx,my) and mp then -- If pressing over a slot.
-			if holding~=nil and s.v==nil then -- Place vial into a slot.
-				s.v=holding
-				holding=nil
-			elseif holding==nil and s.v~=nil then -- Pick up vial from slot.
-				holding=i
-				vox=s.x-mx
-				voy=s.y-my 
-				s.v=nil
+		if coll(s,mx,my) then -- If hovering over a slot:
+			if vials[s.v]~=nil then viewing=vials[s.v]:g(mx-s.x,my-s.y) end
+			if mp then -- If pressing slot:
+				if holding~=nil and s.v==nil then -- Place vial into a slot.
+					s.v=holding
+					holding=nil
+				elseif holding==nil and s.v~=nil then -- Pick up vial from slot.
+					holding=i
+					vox=s.x-mx
+					voy=s.y-my 
+					s.v=nil
+				end
 			end
 		elseif holding~=nill and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
 			-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
@@ -31,10 +32,8 @@ function brew_update()
 	end
 
 	-- Vial-cauldron transfer.
-	if holding~=nil then
-		transfer(caul1,caul1_box)
-		transfer(caul2,caul2_box)
-	end
+	transfer(caul1,caul1_box)
+	transfer(caul2,caul2_box)
 
 	-- Clicking shop button.
 	if mp and coll(shop_box, mx, my) then
@@ -87,9 +86,6 @@ function brew_draw()
 		draw_sim(vials[holding],mx+vox,my+voy)
 	end
 
-	-- Draw frame rate.
-	print(stat(7),112,0)
-
 	-- Draw gold count.
 	spr(4,0,0)
 	oprint(gold,9,1,10)
@@ -118,41 +114,51 @@ function brew_draw()
 	end
 	time_str = time_str .. sec
 	oprint(time_str, 54, 1, time_c)
+
+	-- Draw currently viewed cell.
+	rectfill(0,119,128,128,2)
+	print(viewing)
+	if viewing~=nil then
+		oprint(names[viewing+1],2,121,viewing)
+	end
 end
 
 -- Procedures --
 
 -- Checks if vial is being pressed on cauldron and transfers cells accordingly.
 function transfer(caul, box)
-	if coll(box,mx,my) and md then
-		local cx=mx-box.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
-		local cy=my-box.y
+	if coll(box,mx,my) then
+		viewing=caul:g(mx-box.x,my-box.y)
+		if holding~=nil and md then
+			local cx=mx-box.x-1+flr(rnd(3)) -- Translate (mx,my) to simulation coordinates.
+			local cy=my-box.y
 
-		-- Iterate through cells in vial.
-		local v=vials[holding]
-		local cc=caul:g(cx,cy)
-		for y=0,v.h-1 do
-			local wc=0 -- Wall count.
-			for x=0,v.w-1 do
-				local vc=v:g(x,y)
-				if vc==13 then 
-					wc=wc+1
-				elseif wc==1 then -- Ensure the cells are in the vial (i.e. wall count = 1).
-					-- If the vial cell isn't empty and the cauldron cell is, tranfer it over to the cauldron.
-					if vc~=0 and cc==0 then
-						v:s(x,y,0)
-						caul:s(cx,cy,vc)
-						goto transferred
-					-- If the cauldron cell isn't empty and the vial cell is, tranfer it over to the vial.
-					elseif vc==0 and cc~=0 and cc~=13 then
-						v:s(x,y,cc)
-						caul:s(cx,cy,0)
-						goto transferred
+			-- Iterate through cells in vial.
+			local v=vials[holding]
+			local cc=caul:g(cx,cy)
+			for y=0,v.h-1 do
+				local wc=0 -- Wall count.
+				for x=0,v.w-1 do
+					local vc=v:g(x,y)
+					if vc==13 then 
+						wc=wc+1
+					elseif wc==1 then -- Ensure the cells are in the vial (i.e. wall count = 1).
+						-- If the vial cell isn't empty and the cauldron cell is, tranfer it over to the cauldron.
+						if vc~=0 and cc==0 then
+							v:s(x,y,0)
+							caul:s(cx,cy,vc)
+							goto transferred
+						-- If the cauldron cell isn't empty and the vial cell is, tranfer it over to the vial.
+						elseif vc==0 and cc~=0 and cc~=13 then
+							v:s(x,y,cc)
+							caul:s(cx,cy,0)
+							goto transferred
+						end
 					end
 				end
 			end
+			::transferred::
 		end
-		::transferred::
 	end
 end
 

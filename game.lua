@@ -37,6 +37,26 @@ potions = {
 	{c=1, n="Holy\nTears"},			-- <- fortified runes (4) + sweat of newt (3)
 	{c=10, n="Liquid\nAlgorithms"},	-- <- fenwick tree (9) + holy tears (1)
 }
+
+names={
+	"",
+	"dark blue",
+	"dark purple",
+	"dark green",
+	"oil",
+	"rock",
+	"steam",
+	"white",
+	"blood",
+	"orange",
+	"sand",
+	"acid",
+	"water",
+	"glass",
+	"pink",
+	"tan",
+}
+
 pot_lim = 11
 time_lim = 60
 time_penalty = 0.10
@@ -52,7 +72,7 @@ end
 -- Sets up variables for a game.
 function setup_game()
     -- Game variables.
-    gold = 42
+    gold=42
     holding=nil
 
 	-- Vial variables.
@@ -60,8 +80,8 @@ function setup_game()
 	voy=0
 
 	-- Create simulations.
-	caul1 = create_sim(0, 32,32,32)
-	caul2 = create_sim(32,32,32,32)
+	caul1=create_sim(0, 32,32,32)
+	caul2=create_sim(32,32,32,32)
 
 	-- Vials and vial slots.
     vials={}
@@ -69,13 +89,15 @@ function setup_game()
 	for i=0,7 do
 		v=create_sim(64+i*8,32,8,16)
 		vials[i]=v
-		slots[i]={v=i,x=88+(i%2)*12,y=32+flr(i/2)*24,w=v.w,h=v.h}
+		slots[i]={v=i,x=88+(i%2)*12,y=24+flr(i/2)*24,w=v.w,h=v.h}
 	end
 
 	-- generate order
 	order_i = new_order()
 	pot_timer = t()
 end
+
+setup_game()
 
 function _update60()
     -- Get mouse input.
@@ -84,6 +106,13 @@ function _update60()
 	md=stat(34)==1
 	mp=mdp and not md
 
+	-- Update simulations.
+	update_sim(caul1)
+	update_sim(caul2)
+	for i=0,7 do
+		update_sim(vials[i])
+	end
+		
     -- Screen specific updates.
 	if mode=="title" then
 		title_update()
@@ -99,7 +128,7 @@ function _update60()
 end
 
 function _draw()
-    	cls(0)
+    cls()
 
     -- Screen specific draws.
 	if mode=="title" then	
@@ -125,9 +154,11 @@ end
 
 -- Prints a string with an outline.
 function oprint(t,x,y,c)
+	oc=0
+	if c==0 then oc=1 end
     for xx=-1,1 do
         for yy=-1,1 do
-            print(t,x+xx,y+yy,0)
+            print(t,x+xx,y+yy,oc)
         end      
     end
     print(t,x,y,c)
