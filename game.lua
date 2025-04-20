@@ -64,6 +64,8 @@ names={
 pot_lim = 11
 time_lim = 60
 time_penalty = 0.10
+-- Modify this to change how fast the timer counts down (greater -> faster)!
+time_mod = 1
 
 pot_timer = 0;
 time_str = ""

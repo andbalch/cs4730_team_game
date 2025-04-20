@@ -102,7 +102,7 @@ function brew_draw()
 
 	-- Timer countdown until penalty occurs
 	time_str = ""
-	local d_t = flr((t() - pot_timer) * 3) -- '*3' roughly controls for how pico8 handles time, given update runs 30 times per sec
+	local d_t = flr((t() - pot_timer) * 3 * time_mod) -- '*3' roughly controls for how pico8 handles time, given update runs 30 times per sec
 	if (d_t < time_lim) then
 		d_t = time_lim - d_t
 		time_c = 6
@@ -189,7 +189,7 @@ function serve()
 	-- TODO: New wizard?
 end
 
--- Sets cells in the currently-held vial to 0, Returns % purity (number of target cells over total vial space).
+-- Sets cells in the currently-held vial to 0, Returns float representing recipe purity (number of target cells over total vial space).
 function empty_vial(c)
 	-- Empty vial by slightly modifying the code used for transfer().
 	local v=vials[holding]
