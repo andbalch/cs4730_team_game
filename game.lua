@@ -45,19 +45,19 @@ potions = {
 names={
 	"",
 	"dark blue",
-	"dark purple",
+	"miasma",
 	"dark green",
 	"oil",
 	"rock",
 	"steam",
-	"white",
-	"blood",
-	"orange",
+	"dreams",
+	"blood of dragon",
+	"sweat of newt",
 	"sand",
 	"acid",
 	"water",
 	"glass",
-	"pink",
+	"fairy dust",
 	"tan",
 }
 
@@ -93,7 +93,7 @@ function setup_game()
 	for i=0,7 do
 		v=create_sim(64+i*8,32,8,16)
 		vials[i]=v
-		slots[i]={v=i,x=88+(i%2)*12,y=24+flr(i/2)*24,w=v.w,h=v.h}
+		slots[i]={v=i,x=96+(i%2)*12,y=24+flr(i/2)*24,w=v.w,h=v.h}
 	end
 
 	-- generate order
@@ -180,4 +180,8 @@ function oprint(t,x,y,c)
         end      
     end
     print(t,x,y,c)
+end
+
+function draw_box_outline(b)
+	rect(b.x-1,b.y-1,b.x+b.w,b.y+b.h,7) 
 end

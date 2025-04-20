@@ -63,7 +63,7 @@ function shop_draw()
             if md then
                 rectfill(b.x,b.y,r,d,15) 
             end
-            rect(b.x-1,b.y-1,r+1,d+1,7)
+            draw_box_outline(b)
         end
 
         rect(b.x+1,b.y+1,b.x+7,b.y+7,13)
@@ -74,7 +74,7 @@ function shop_draw()
     -- Draw back button.
     spr(3,back_box.x,back_box.y)
     if back_hov then 
-        rect(back_box.x-1,back_box.y-1,back_box.x+back_box.w,back_box.y+back_box.h,7) 
+        draw_box_outline(back_box)
     end
 end
 
