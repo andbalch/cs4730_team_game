@@ -29,7 +29,7 @@ function create_sim(x,y,w,h)
 		-- Sets cell (x,y).
 		s=function(s,x,y,c)
 			local col=s.b[x]
-			if(col~=null) then
+			if(col~=nil) then
 				col[y]=c
 			end
 		end,

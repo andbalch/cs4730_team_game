@@ -27,7 +27,7 @@ function brew_update()
 					s.v=nil
 				end
 			end
-		elseif holding~=nill and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
+		elseif holding~=nil and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
 			-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
 			serve()
 		end
@@ -59,6 +59,7 @@ function brew_draw()
 	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
 	-- Draw shop button.
+
 	spr(49,shop_box.x,shop_box.y)
 	if shop_hov then draw_box_outline(shop_box) end
 
