@@ -57,6 +57,9 @@ function brew_draw()
 
 	-- Draw shop button.
 	spr(132,shop_box.x,shop_box.y,4,2)
+	if coll(shop_box, mx, my) then
+		rect(shop_box.x-1,shop_box.y-1,shop_box.x+shop_box.w - 1,shop_box.y+shop_box.h,7)
+	end
 
 	-- Draw cauldrons.
 	draw_sim(caul1, caul1_box.x, caul1_box.y)
