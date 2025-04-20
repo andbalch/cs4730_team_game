@@ -1,10 +1,12 @@
 -- Constants.
 caul1_box={x=8,y=80,w=32,h=32}
 caul2_box={x=48,y=80,w=32,h=32}
-shop_box={x=82,y=4,w=32,h=16}
+shop_box={x=119,y=1,w=8,h=8}
+
 
 -- Variables.
 viewing=nil
+shop_hov=false
 
 function brew_update()
 	viewing=nil
@@ -36,7 +38,8 @@ function brew_update()
 	transfer(caul2,caul2_box)
 
 	-- Clicking shop button.
-	if mp and coll(shop_box, mx, my) then
+	shop_hov=coll(shop_box, mx, my)
+	if mp and shop_hov then
 		mode="shop"
 	end
 end
@@ -56,10 +59,9 @@ function brew_draw()
 	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
 	-- Draw shop button.
-	spr(132,shop_box.x,shop_box.y,4,2)
-	if coll(shop_box, mx, my) then
-		rect(shop_box.x-1,shop_box.y-1,shop_box.x+shop_box.w - 1,shop_box.y+shop_box.h,7)
-	end
+
+	spr(49,shop_box.x,shop_box.y)
+	if shop_hov then draw_box_outline(shop_box) end
 
 	-- Draw cauldrons.
 	draw_sim(caul1, caul1_box.x, caul1_box.y)
