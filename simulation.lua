@@ -49,9 +49,9 @@ function create_sim(x,y,w,h)
 
 			if c2~=13 and c1~=c2 then
 				-- Acid destroys.
-				if (c1==11 or c2==11) and (c1~=0 and c2~=0) then
-					s:s(x1,y1,0)
-					s:s(x2,y2,0)
+				if (c1==11 or c2==11) and c1~=0 and c2~=0 and c1~=6 and c2~=6 then
+					s:s(x1,y1,6)
+					s:s(x2,y2,6)
 					return true
 				elseif density[c1+1]>density[c2+1] then -- Check for permeability, and swap if it works.
 					s:s(x1,y1,c2)
