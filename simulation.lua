@@ -1,4 +1,4 @@
-density={0,10,10,10,4,10,10,10,10,10,10,5,5,99,10,10}
+density={0,10,10,10,4,10,1,10,10,10,10,5,5,99,10,10}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
@@ -17,6 +17,7 @@ function create_sim(x,y,w,h)
 		w=w,
 		h=h,
 		b=b,
+		t=0,
 		-- Gets cell (x,y).
 		g=function(s,x,y)
 			if (x>=0 and y>=0 and x<s.w and y<s.h) then
@@ -64,22 +65,45 @@ function create_sim(x,y,w,h)
 	}
 end
 
-function update_sim(s) 
-	for x=0,s.w do
-		for y=s.h,0,-1 do
+function update_sim(s)
+	s.t=s.t+1
+	local r=flr(rnd(10)) 
+	for x=0,s.w-1 do
+		-- Materials that move down.
+		local sim_steam=s.t%4==0
+		for y=0,s.h-1 do
 			local c=s:g(x,y)
-			if c~=0 and c~=13 then
-				-- Basic falling.
-				local fell=s:try(x,y,x,y+1) or 
-					(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
-					(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
+			if sim_steam and c==6 then
+				local d=-1+((r+x+y)%3)
+				-- Steam falls up.
+				local float=s:try(x,y,x,y-1) or 
+				(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y-1)) or 
+				(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y-1))
 
-				-- Liquid horizontal movement.
-                if not fell and c~=10 then
+				if not float then
 					local d=1
 					if y%2==0 then d=-1 end
-					moved=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
+					local m=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
 				end 
+			end
+		end
+
+		-- Materials that move down.
+		for y=s.h,0,-1 do
+			local c=s:g(x,y)
+			if c~=0 and c~=13 and c~=6 then
+				-- Basic falling.
+				local fell=s:try(x,y,x,y+1) or 
+				(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
+				(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
+
+				-- Liquid horizontal movement.
+				if not fell and c~=10 then
+					local d=1
+					if y%2==0 then d=-1 end
+					local m=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
+				end 
+
 			end
 		end
 	end
