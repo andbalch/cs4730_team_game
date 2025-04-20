@@ -103,6 +103,7 @@ function setup_game()
 end
 
 setup_game()
+music(4)
 
 function _update60()
     -- Get mouse input.
