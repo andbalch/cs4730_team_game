@@ -44,21 +44,21 @@ potions = {
 
 names={
 	"",
-	"dark blue",
-	"miasma",
-	"dark green",
-	"oil",
-	"rock",
-	"steam",
-	"dreams",
-	"blood of dragon",
+	"holy tears",
+	"spesi cola",
 	"sweat of newt",
-	"sand",
+	"fortified runes",
+	"gaseous materia",
+	"dew of miasma",
+	"caustic dreams",
+	"dragon's blood",
+	"fenwick tree",
+	"liquid algorithms",
 	"acid",
 	"water",
-	"glass",
+	"",
 	"fairy dust",
-	"tan",
+	"wyrmwood oil",
 }
 
 pot_lim = 11
