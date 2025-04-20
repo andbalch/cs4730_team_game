@@ -22,20 +22,17 @@ cust = {
 
 potions = {
 	-- Roughly ordered by difficulty
-	-- 1st order potion: Req. only primary ingredients (water and fairy dust)
-	{c=15, n="wyrmwood\noil"},		-- <- water (12) + fairy dust (14)
-
-	-- 2nd order potion: Req. primary ingredients and 1st order potion
+	-- 1st order potion: Req. only primary ingredients (water, fairy dust, wyrmwood oil)
 	{c=7, n="caustic\ndreams"},		-- <- water (12) + wyrmwood oil (15)
-	{c=4, n="fortified\nrunes"},		-- <- fairy dust (14) + wyrmwood oil (15)
+	{c=4, n="fortified\nrunes"},	-- <- fairy dust (14) + wyrmwood oil (15)
 
-	-- 3rd order potion: Req. primary ingredients and 2nd order potion
-	{c=5, n="gaseous\nmateria"},		-- <- water (12) + fortified runes (4)
-	{c=8, n="dragon's\nBlood"},		-- <- fairy dust (14) + caustic dreams (7)
-	{c=2, n="spesi\nCola"},			-- <- water (12) + caustic dreams (7)
+	-- 2nd order potion: Req. primary ingredients and/or 1st order potions
+	{c=5, n="gaseous\nmateria"},	-- <- water (12) + fortified runes (4)
+	{c=8, n="dragon's\nblood"},		-- <- fairy dust (14) + caustic dreams (7)
+	{c=2, n="spesi\ncola"},			-- <- fortified runes (4) + caustic dreams (7) 
 
-	-- 4th order potion: No primary ingredients
-	{c=3, n="sweat of\nnewt"},		-- <- wyrmwood oil (15) + gaseous materia (5)
+	-- 3rd order potion: Req. primary ingredients and/or 2nd order potions
+	{c=3, n="sweat of\nnewt"},		-- <- wyrmwood oil (15) + gaseous materia (5) 
 	{c=6, n="dew of\nmiasma"},		-- <- caustic dreams (7) + gaseous materia (5)
 	{c=9, n="fenwick\ntree"},		-- <- fortified runes (4) + spesi cola (2)
 	{c=1, n="holy\ntears"},			-- <- fortified runes (4) + sweat of newt (3)
@@ -61,7 +58,7 @@ names={
 	"wyrmwood oil",
 }
 
-pot_lim = 11
+pot_lim = #potions
 time_lim = 60
 time_penalty = 0.10
 -- Modify this to change how fast the timer counts down (greater -> faster)!
@@ -70,6 +67,8 @@ time_mod = 1
 pot_timer = 0;
 time_str = ""
 time_c = 6
+
+order_i = -1
 -- Generates a new order randomly
 function new_order()
 	return flr(rnd(pot_lim)) + 1

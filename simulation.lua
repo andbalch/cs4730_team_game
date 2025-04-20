@@ -132,11 +132,8 @@ end
 
 -- Helper function to compare adjacent cell colors and see if they make a potion/reaction
 function check_recipe(c1, c2)
-	-- wyrmwood oil
-	if cmp_cells(c1, c2, 12, 14) then
-		return 15
 	-- caustic dreams
-	elseif cmp_cells(c1, c2, 12, 15) then
+	if cmp_cells(c1, c2, 12, 15) then
 		return 7
 	-- fortified runes
 	elseif cmp_cells(c1, c2, 15, 14) then
@@ -148,7 +145,7 @@ function check_recipe(c1, c2)
 	elseif cmp_cells(c1, c2, 7, 14) then
 		return 8
 	-- spesi cola
-	elseif cmp_cells(c1, c2, 12, 7) then
+	elseif cmp_cells(c1, c2, 4, 7) then
 		return 2
 	-- sweat of newt
 	elseif cmp_cells(c1, c2, 15, 5) then
