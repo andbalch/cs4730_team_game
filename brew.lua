@@ -25,7 +25,7 @@ function brew_update()
 					s.v=nil
 				end
 			end
-		elseif holding~=nill and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
+		elseif holding~=nil and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
 			-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
 			serve()
 		end
