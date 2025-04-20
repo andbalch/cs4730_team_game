@@ -91,6 +91,7 @@ function brew_draw()
 		draw_sim(vials[holding],mx+vox,my+voy)
 	end
 
+
 	-- Draw gold count.
 	spr(4,0,0)
 	oprint(gold,9,1,10)
@@ -125,6 +126,9 @@ function brew_draw()
 	if viewing~=nil then
 		oprint(names[viewing+1],2,121,viewing)
 	end
+
+	-- Draw frame count.
+	--print(stat(7),116,120,7)
 end
 
 -- Procedures --
