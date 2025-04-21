@@ -2,6 +2,7 @@
 caul1_box={x=8,y=80,w=32,h=32}
 caul2_box={x=48,y=80,w=32,h=32}
 shop_box={x=119,y=1,w=8,h=8}
+recipes_box={x=110,y=1,w=8,h=8}
 
 
 -- Variables.
@@ -42,6 +43,12 @@ function brew_update()
 	if mp and shop_hov then
 		mode="shop"
 	end
+
+	-- Clicking recipes button.
+	recipes_hov=coll(recipes_box, mx, my)
+	if mp and recipes_hov then
+		mode="recipes"
+	end
 end
 
 function brew_draw()
@@ -77,6 +84,10 @@ function brew_draw()
 
 	spr(49,shop_box.x,shop_box.y)
 	if shop_hov then draw_box_outline(shop_box) end
+
+	-- Draw recipes button.
+	spr(38,recipes_box.x,recipes_box.y)
+	if recipes_hov then draw_box_outline(recipes_box) end
 
 	-- Draw cauldrons.
 	draw_sim(caul1, caul1_box.x, caul1_box.y)

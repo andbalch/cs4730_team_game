@@ -131,6 +131,8 @@ function _update60()
         brew_update()
     elseif mode=="shop" then
         shop_update()
+	elseif mode=="recipes" then
+		recipes_update()
     end
 
 	-- Update mouse down previous.
@@ -147,6 +149,8 @@ function _draw()
         brew_draw()
     elseif mode=="shop" then
         shop_draw()
+	elseif mode=="recipes" then
+		recipes_draw()
     end
 
 	-- Draw error.
