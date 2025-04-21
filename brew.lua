@@ -100,8 +100,12 @@ function brew_draw()
 	if recipes_hov then draw_box_outline(recipes_box) end
 
 	-- Draw rubbish can.
-	spr(43, can_box.x, can_box.y)
-	if can_hov and holding then draw_box_outline(can_box) end
+	if holding then
+		spr(43, can_box.x, can_box.y)
+		if can_hov then 
+			draw_box_outline(can_box) 
+		end
+	end
 
 	-- Draw cauldrons.
 	draw_sim(caul1, caul1_box.x, caul1_box.y)
