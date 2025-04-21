@@ -3,6 +3,7 @@
 -- TODO: populate with more recipes
 -- TODO: possibly multiple pages
 -- TODO: handle "discovering" recipes - simulation dependent so maybe someone else does this
+-- TODO: maybe show name on hover on this page (and maybe shop as well)?
 
 
 function init_recipes()
