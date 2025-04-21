@@ -22,6 +22,7 @@ cust = {
 	long_nose = false
 }
 
+-- TOOD: Variable profits, time limits?
 potions = {
 	-- Roughly ordered by difficulty
 	-- 1st order potion: Req. only primary ingredients (water, fairy dust, wyrmwood oil)

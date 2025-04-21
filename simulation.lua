@@ -171,7 +171,22 @@ function check_recipe(c1, c2)
 		return 10
 
 	-- TODO: expand to include dangerous reactions. Can indicate these with a global or by returning a val > 15?
-
+	-- Overflow: water (12) + fairy dust (14)
+	elseif cmp_cells(c1, c2, 12, 14) then
+		-- cauldron is completely filled with fairy dust (or water? whichever)
+	
+		-- Explosion: dragon's blood (8) + spesi cola (2) 
+	elseif cmp_cells(c1, c2, 8, 2) then
+		-- screen flashes and everything in the cauldron is gone?
+	
+		-- Double time: holy tears (1) + spesi cola (2)
+	elseif cmp_cells(c1, c2, 2, 1) then
+		-- change time_mod parameter to 2, make sure to change back!
+	
+		-- Half profit: dew of miasma (6) + gaseous materia (5)
+	elseif cmp_cells(c1, c2, 6, 5) then
+		-- exactly what it sounds, need some sort of a global profit var to modify
+	
 	-- invalid recipe -> do nothing
 	else
 		return -1
