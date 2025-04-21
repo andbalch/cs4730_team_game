@@ -52,9 +52,15 @@ function brew_draw()
 	-- spr(ws,48,8,4,4)
 	-- spr(ws,48,48,4,4)
 
-	-- Big wizard?
-	local ws=56+32*(flr(t()*2)%2)
-	sspr(ws, 0, 32, 32, cust.x, cust.y, cust.w, cust.h)
+	-- Big wizard!
+	local ws_eyes = (flr(t()*2)%2)
+
+	sspr(56, 0, 32, 32, cust.x, cust.y, cust.w, cust.h)
+
+	if ws_eyes == 0 then
+		sspr(11*8, 0, 16, 8, cust.x + 16, cust.y + 16, 32, 16)
+	end
+	
 	-- He's in a window!
 	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
