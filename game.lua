@@ -17,7 +17,8 @@ cust = {
 	x=12,
 	y=12,
 	w=64,
-	h=64
+	h=64,
+	robe_col = 1
 }
 
 potions = {

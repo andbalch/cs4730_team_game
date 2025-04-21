@@ -53,6 +53,12 @@ function brew_draw()
 	-- spr(ws,48,48,4,4)
 
 	-- Big wizard!
+
+	-- swap palette to draw different wizards with different color robes.
+	-- color on sprite sheet is 1.
+	pal(1, cust.robe_col)
+
+
 	local ws_eyes = (flr(t()*2)%2)
 
 	sspr(56, 0, 32, 32, cust.x, cust.y, cust.w, cust.h)
@@ -61,6 +67,9 @@ function brew_draw()
 		sspr(11*8, 0, 16, 8, cust.x + 16, cust.y + 16, 32, 16)
 	end
 	
+	-- return palette to normal after drawing wizard.
+	pal()
+
 	-- He's in a window!
 	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
@@ -191,6 +200,9 @@ function serve()
 
 	-- Transition to next order
 	order_i = new_order()
+
+	-- switch to new robe color for new customer.
+	cust.robe_col = flr(rnd(14) + 1) 
 	
 	-- Set timer
 	-- TODO: variable time limits?
