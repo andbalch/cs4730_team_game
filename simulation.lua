@@ -52,7 +52,9 @@ function create_sim(x,y,w,h)
 					-- Acid destroys.
 					if (c1==11 or c2==11) then
 						s:s(x1,y1,6)
-						s:s(x2,y2,6)
+						local tc=11
+						if s.r>7 then tc=6 end
+						s:s(x2,y2,tc)
 						return true
 					-- Check if c1 and c2 make a recipe or reaction
 					else
@@ -88,7 +90,7 @@ function update_sim(s)
 	s.t=s.t+1
 	
 	for x=0,s.w-1 do
-		local r=flr(rnd(10)) 
+		s.r=flr(rnd(10)) 
 
 		-- Materials that move down.
 		for y=s.h,0,-1 do
@@ -96,8 +98,8 @@ function update_sim(s)
 			if c~=0 and c~=13 and c~=6 then
 				-- Random movement for liquid algorithms.
 				if c==10 then
-					local dx=-1+2*(r%2)
-					local dy=-1+2*((x-y-r)%2)
+					local dx=-1+2*(s.r%2)
+					local dy=((x-y-s.r)%2)
 					local m=s:try(x,y,x+dx,y+dy)
 				elseif c==9 then
 					local dissolve=false
@@ -113,7 +115,7 @@ function update_sim(s)
 					end
 
 					-- Fenwick tree growing.
-					if not fell and r>8 then
+					if not fell and s.r>8 then
 						local dx=-1+flr(rnd(3))
 						if s:perm(x,y,x,y-1) and s:perm(x,y,x+dx,y-1) and s:neigh(x+dx,y-1,9)<=1 then 
 							s:s(x+dx,y-1,9)
@@ -133,11 +135,9 @@ function update_sim(s)
 					local mov=false
 					if not fell and c~=10 and c~=14 then
 						local d=1
-						if y%2==0 then d=-1 end
+						if (y+s.r)%2==0 then d=-1 end
 						mov=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
 					end 
-
-	
 				end
 			end
 		end
@@ -147,7 +147,7 @@ function update_sim(s)
 		for y=0,s.h-1 do
 			local c=s:g(x,y)
 			if sim_steam and c==6 then
-				local d=-1+((r+x+y)%3)
+				local d=-1+((s.r+x+y)%3)
 				-- Steam falls up.
 				local float=s:try(x,y,x,y-1) or 
 				(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y-1)) or 
