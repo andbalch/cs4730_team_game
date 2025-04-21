@@ -5,6 +5,14 @@
 -- TODO: handle "discovering" recipes - simulation dependent so maybe someone else does this
 -- TODO: maybe show name on hover on this page (and maybe shop as well)?
 
+current_page = 1
+max_page = 2
+
+pg_fwd_box={x=119,y=119,w=8,h=8}
+pg_fwd_hov=false
+
+pg_bk_box={x=110,y=119,w=8,h=8}
+pg_bk_hov=false
 
 function init_recipes()
 
@@ -16,6 +24,10 @@ function init_recipes()
     recipe_book[5] = create_recipe(4, 7, 2, false)
     recipe_book[6] = create_recipe(15, 5, 3, false)
     recipe_book[7] = create_recipe(7, 5, 6, false)
+
+    recipe_book[8] = create_recipe(4, 2, 9, false)
+    recipe_book[9] = create_recipe(4, 3, 1, false)
+    recipe_book[10] = create_recipe(9, 1, 10, false)
 
 end
 
@@ -66,6 +78,16 @@ function recipes_update()
     if back_hov and mp then
          mode="brew"
     end
+
+    pg_bk_hov=coll(pg_bk_box,mx,my)
+    if pg_bk_hov and mp then
+         mode="brew"
+    end
+
+    pg_fwd_hov=coll(pg_fwd_box,mx,my)
+    if pg_fwd_hov and mp then
+         mode="brew"
+    end
 end
 
 
@@ -77,7 +99,6 @@ function recipes_draw()
         w = 80,
         h = 110
     }
-
 
     -- Draw book.
     -- This code sucks.
@@ -121,5 +142,17 @@ function recipes_draw()
     spr(3,back_box.x,back_box.y)
     if back_hov then 
         draw_box_outline(back_box)
+    end
+
+    -- Draw page forward button.
+    spr(28,pg_fwd_box.x,pg_fwd_box.y)
+    if pg_fwd_hov then 
+        draw_box_outline(pg_fwd_box)
+    end
+
+    -- Draw page back button.
+    spr(27,pg_bk_box.x,pg_bk_box.y)
+    if pg_bk_hov then 
+        draw_box_outline(pg_bk_box)
     end
 end
