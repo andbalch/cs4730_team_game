@@ -109,7 +109,7 @@ function update_sim(s)
 					-- Fenwick tree growing.
 					if not fell and r>8 then
 						local dx=-1+flr(rnd(3))
-						if s:perm(x,y,x,y-1) and s:perm(x,y,x+dx,y-1) and s:neigh(x+dx,y-1,9)==1 then 
+						if s:perm(x,y,x,y-1) and s:perm(x,y,x+dx,y-1) and s:neigh(x+dx,y-1,9)<=1 then 
 							s:s(x+dx,y-1,9)
 						end
 					end
