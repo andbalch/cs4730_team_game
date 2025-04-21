@@ -1,19 +1,19 @@
 prices={
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
-    10,
+    70, -- holy tears 3rd
+    50, -- spesi cola 2nd
+    70, -- sweat of newt 3rd
+    30, -- fortified runes 1st
+    50, -- gaseous materia 2nd
+    70, -- dew of miasma 3rd
+    30, -- caustic dreams 1st
+    50, -- dragon's blood 2nd
+    70, -- fenwick tree 3rd
+    70, -- liquid algoritms 3rd
+    10, -- acid primary
+    10, -- water primary
+    5, -- cauldron unassigned
+    10, -- fairy dust primary
+    10, -- wyrmwood oil primary
 }
 
 -- Buttons.

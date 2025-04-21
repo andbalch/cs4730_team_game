@@ -45,7 +45,7 @@ names={
 	"spesi cola",
 	"sweat of newt",
 	"fortified runes",
-	"gaseous material",
+	"gaseous materia",
 	"dew of miasma",
 	"caustic dreams",
 	"dragon's blood",
