@@ -8,10 +8,10 @@
 current_page = 1
 max_page = 2
 
-pg_fwd_box={x=119,y=119,w=8,h=8}
+pg_fwd_box={x=119,y=116,w=8,h=8}
 pg_fwd_hov=false
 
-pg_bk_box={x=110,y=119,w=8,h=8}
+pg_bk_box={x=110,y=116,w=8,h=8}
 pg_bk_hov=false
 
 function init_recipes()
@@ -134,8 +134,14 @@ function recipes_draw()
 
 
     -- Write recipes on page.
-    for i = 1,#recipe_book do
-        write_recipe(recipe_book[i], i-1)
+    if current_page == 1 then
+        for i = 1,7 do
+            write_recipe(recipe_book[i], i-1)
+        end
+    else
+        for i = 8,#recipe_book do
+            write_recipe(recipe_book[i], i-8)
+        end
     end
 
     -- Print page number on page.
