@@ -1,4 +1,4 @@
-density={0,10,10,10,4,10,1,10,10,10,20,5,5,99,10,10}
+density={0,10,8,9,4,10,1,12,11,20,20,5,5,99,20,10}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
@@ -100,9 +100,15 @@ function update_sim(s)
 					local dy=-1+2*((x-y-r)%2)
 					local m=s:try(x,y,x+dx,y+dy)
 				elseif c==9 then
+					local dissolve=false
+					if s:neigh(x,y,12)>=2 then
+						s:s(x,y,12)
+						dissolve=true
+					end
+
 					-- Try falling if there is no support.
 					local fell=false
-					if s:perm(x,y,x,y+1) and s:perm(x,y,x-1,y+1) and s:perm(x,y,x+1,y+1) then
+					if not dissolve and s:perm(x,y,x,y+1) and s:perm(x,y,x-1,y+1) and s:perm(x,y,x+1,y+1) then
 						fell=s:try(x,y,x,y+1)
 					end
 
@@ -113,6 +119,8 @@ function update_sim(s)
 							s:s(x+dx,y-1,9)
 						end
 					end
+
+					
 				else
 					-- Basic falling.
 					local fell=s:try(x,y,x,y+1)
