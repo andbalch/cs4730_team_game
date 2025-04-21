@@ -134,24 +134,31 @@ end
 function check_recipe(c1, c2)
 	-- caustic dreams
 	if cmp_cells(c1, c2, 12, 15) then
+		recipe_book[1].discovered = true
 		return 7
 	-- fortified runes
 	elseif cmp_cells(c1, c2, 15, 14) then
+		recipe_book[2].discovered = true
 		return 4
 	-- gaseous materia
 	elseif cmp_cells(c1, c2, 12, 4) then
+		recipe_book[3].discovered = true
 		return 5
 	-- dragon's blood
 	elseif cmp_cells(c1, c2, 7, 14) then
+		recipe_book[4].discovered = true
 		return 8
 	-- spesi cola
 	elseif cmp_cells(c1, c2, 4, 7) then
+		recipe_book[5].discovered = true
 		return 2
 	-- sweat of newt
 	elseif cmp_cells(c1, c2, 15, 5) then
+		recipe_book[6].discovered = true
 		return 3
 	-- dew of miasma
 	elseif cmp_cells(c1, c2, 7, 5) then
+		recipe_book[7].discovered = true
 		return 6
 	-- fenwick tree
 	elseif cmp_cells(c1, c2, 2, 4) then
