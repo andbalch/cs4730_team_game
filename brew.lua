@@ -8,6 +8,7 @@ can_box={x=99,y=1,w=8,h=8}
 -- Variables.
 viewing=nil
 shop_hov=false
+transfer_mode=nil
 
 function brew_update()
 	viewing=nil
@@ -37,6 +38,9 @@ function brew_update()
 	-- Vial-cauldron transfer.
 	transfer(caul1,caul1_box)
 	transfer(caul2,caul2_box)
+	if not md then 
+		transfer_mode=nil
+	end
 
 	-- Clicking shop button.
 	shop_hov=coll(shop_box, mx, my)
@@ -171,6 +175,12 @@ function brew_draw()
 		oprint(names[viewing+1],2,121,viewing)
 	end
 
+	-- Draw transfer mode.
+	if transfer_mode=="pour" then
+		oprint("pouring...",88,121,7)
+	elseif transfer_mode=="collect" then
+		oprint("collecting...",76,121,7)
+	end
 	-- Draw frame count.
 	--print(stat(7),116,120,7)
 end
@@ -196,14 +206,16 @@ function transfer(caul, box)
 						wc=wc+1
 					elseif wc==1 then -- Ensure the cells are in the vial (i.e. wall count = 1).
 						-- If the vial cell isn't empty and the cauldron cell is, tranfer it over to the cauldron.
-						if vc~=0 and cc==0 then
+						if vc~=0 and cc==0 and (transfer_mode==nil or transfer_mode=="pour") then
 							v:s(x,y,0)
 							caul:s(cx,cy,vc)
+							transfer_mode="pour"
 							goto transferred
 						-- If the cauldron cell isn't empty and the vial cell is, tranfer it over to the vial.
-						elseif vc==0 and cc~=0 and cc~=13 then
+						elseif vc==0 and cc~=0 and cc~=13 and (transfer_mode==nil or transfer_mode=="collect") then
 							v:s(x,y,cc)
 							caul:s(cx,cy,0)
+							transfer_mode="collect"
 							goto transferred
 						end
 					end
