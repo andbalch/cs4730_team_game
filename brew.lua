@@ -65,13 +65,17 @@ function brew_draw()
 	-- color on sprite sheet is 1.
 	pal(1, cust.robe_col)
 
-
-	local ws_eyes = (flr(t()*2)%2)
-
+	-- main wizard draw.
 	sspr(56, 0, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
-	if ws_eyes == 0 then
+	-- periodically move eyes.
+	if (flr(t()*2)%2) == 0 then
 		sspr(11*8, 0, 16, 8, cust.x + 16, cust.y + 16, 32, 16)
+	end
+
+	-- draw long nose.
+	if (cust.long_nose) then
+		sspr(13*8, 0, 8, 8, cust.x + 16, cust.y + 32, 16, 16)
 	end
 	
 	-- return palette to normal after drawing wizard.
@@ -214,6 +218,12 @@ function serve()
 
 	-- switch to new robe color for new customer.
 	cust.robe_col = flr(rnd(14) + 1) 
+
+	-- chance go give wizard a long nose.
+	cust.long_nose = false
+	if flr(rnd(6)) == 0 then
+		cust.long_nose = true
+	end
 	
 	-- Set timer
 	-- TODO: variable time limits?
