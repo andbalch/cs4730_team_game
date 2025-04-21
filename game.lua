@@ -86,6 +86,10 @@ function setup_game()
 	vox=0 -- Vial offset from the mouse.
 	voy=0
 
+
+	-- Initialize recipe book.
+	init_recipes()
+
 	-- Create simulations.
 	caul1=create_sim(0, 32,32,32)
 	caul2=create_sim(32,32,32,32)

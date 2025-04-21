@@ -1,3 +1,58 @@
+
+-- TODO: handle recipes where the result is an effect rather than a potion
+-- TODO: populate with more recipes
+-- TODO: possibly multiple pages
+
+
+function init_recipes()
+
+    recipe_book = {}
+    recipe_book[1] = create_recipe(14, 15, 4, false)
+    recipe_book[2] = create_recipe(12, 4, 5, false)
+
+end
+
+function create_recipe(ing_1, ing_2, result, discovered)
+
+    local recipe = {}
+    recipe.ing_1 = ing_1
+    recipe.ing_2 = ing_2
+    recipe.result = result
+    recipe.discovered = discovered
+    return recipe
+
+end
+
+function write_recipe(rp, index)
+
+    -- Write ingredient 1.
+    rect(30, 15, 36, 21, 13)
+    rectfill(31, 16, 35, 20, rp.ing_1)
+    
+    -- Write ingredient 2.
+    rect(50, 15, 56, 21, 13)
+    rectfill(51, 16, 55, 20, rp.ing_2)
+
+    -- Write result, or question mark if recipe is not yet discovered.
+    if rp.discovered then
+        rect(80, 15, 86, 21, 13)
+        rectfill(81, 16, 85, 20, rp.result)
+    else
+        print("?", 81, 16, 13)
+    end
+    
+    -- Plus sign.
+    rectfill(43, 16, 43, 20, 13)
+    rectfill(41, 18, 45, 18, 13)
+
+
+    -- Equal sign.
+    rectfill(66, 17, 70, 17, 13)
+    rectfill(66, 19, 70, 19, 13)
+
+end
+
+
 function recipes_update()
 
     back_hov=coll(back_box,mx,my)
@@ -47,6 +102,12 @@ function recipes_draw()
 
     for i = 0, 20 do
         line(18, i*5 + 12, 22, i*5 + 14, 13) -- book binding
+    end
+
+
+    -- Write recipes on page.
+    for i = 1,#recipe_book do
+        write_recipe(recipe_book[i], i)
     end
 
     -- Draw back button.
