@@ -12,16 +12,6 @@ mp=false -- Mouse pressed.
 error_str=nil
 error_timer=0
 
--- Customer region, used for painting sprite and serving potions
-cust = {
-	x=12,
-	y=12,
-	w=64,
-	h=64,
-	robe_col = 1,
-	long_nose = false
-}
-
 -- TOOD: Variable profits, time limits?
 potions = {
 	-- Roughly ordered by difficulty
@@ -82,11 +72,11 @@ function setup_game()
     -- Game variables.
     gold=42
     holding=nil
+	cust=gen_cust()
 
 	-- Vial variables.
 	vox=0 -- Vial offset from the mouse.
 	voy=0
-
 
 	-- Initialize recipe book.
 	init_recipes()
@@ -170,6 +160,7 @@ function _draw()
 	spr(ms,mx,my)
 
 end
+
 
 -- Utility Functions --
 

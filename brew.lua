@@ -1,10 +1,9 @@
 -- Constants.
 caul1_box={x=8,y=80,w=32,h=32}
 caul2_box={x=48,y=80,w=32,h=32}
-shop_box={x=119,y=1,w=8,h=8}
-recipes_box={x=110,y=1,w=8,h=8}
-can_box={x=101,y=1,w=8,h=8}
-
+shop_box={x=119,y=1,w=7,h=8}
+recipes_box={x=108,y=1,w=9,h=8}
+can_box={x=99,y=1,w=8,h=8}
 
 -- Variables.
 viewing=nil
@@ -51,8 +50,9 @@ function brew_update()
 		mode="recipes"
 	end
 
+	-- Emptying van.
 	can_hov=coll(can_box, mx, my)
-	if mp and can_hov and holding then
+	if mp and can_hov and holding~=nil then
 		empty_vial(0)
 	end
 end
@@ -224,20 +224,14 @@ function serve()
 		score = score * (1 - time_penalty)
 	end
 
-	-- Inc. score
+	-- Increase score.
 	gold = gold + score
 
 	-- Transition to next order
 	order_i = new_order()
 
-	-- switch to new robe color for new customer.
-	cust.robe_col = flr(rnd(14) + 1) 
-
-	-- chance go give wizard a long nose.
-	cust.long_nose = false
-	if flr(rnd(6)) == 0 then
-		cust.long_nose = true
-	end
+	-- Generate a new customer.
+	cust = gen_cust()
 	
 	-- Set timer
 	-- TODO: variable time limits?
@@ -246,7 +240,7 @@ function serve()
 	-- TODO: New wizard?
 end
 
--- Sets cells in the currently-held vial to 0, Returns float representing recipe purity (number of target cells over total vial space).
+-- Empties the currently-held vial, returns float representing recipe purity (number of target cells over total vial space).
 function empty_vial(c)
 	-- Empty vial by slightly modifying the code used for transfer().
 	local v=vials[holding]
@@ -284,4 +278,19 @@ function draw_fire(box)
 		local c=8+flr(rnd(3))
 		circfill(x,y,r,c)
 	end
+end
+
+-- Generates a customer.
+robe_cols={1,2,3,4,5,6,8,12,14}
+function gen_cust()
+	local nose=true
+	if(rnd(1)>0.5) then nose=false end
+	return {
+		x=12,
+		y=12,
+		w=64,
+		h=64,
+		robe_col=robe_cols[1+flr(rnd(#robe_cols))],
+		long_nose=noise
+	}
 end

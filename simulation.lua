@@ -1,4 +1,4 @@
-density={0,10,10,10,4,10,1,10,10,10,10,5,5,99,10,10}
+density={0,10,10,10,4,10,1,10,10,10,20,5,5,99,10,10}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
@@ -48,7 +48,6 @@ function create_sim(x,y,w,h)
 			local c1,c2=s:g(x1,y1),s:g(x2,y2)	
 
 			if c2~=13 and c1~=c2 then
-				adj_occupied = c1~=0 and c2~=0 and c1~=6 and c2~=6
 				if c1~=0 and c2~=0 and c1~=6 and c2~=6 then
 					-- Acid destroys.
 					if (c1==11 or c2==11) then
@@ -57,8 +56,8 @@ function create_sim(x,y,w,h)
 						return true
 					-- Check if c1 and c2 make a recipe or reaction
 					else
-						prod = check_recipe(c1, c2)
-						if prod ~= -1 then 
+						prod=check_recipe(c1, c2)
+						if prod~=nil then 
 							s:s(x1,y1,prod)
 							s:s(x2,y2,prod)
 							return true
@@ -72,16 +71,71 @@ function create_sim(x,y,w,h)
 				end
 			end
 			return false
+		end,
+		neigh=function(s,x,y,c)
+			local cnt=0
+			for dx=-1,1 do
+				for dy=-1,1 do
+					if s:g(x+dx,y+dy)==c then cnt=cnt+1 end
+				end
+			end
+			return cnt
 		end
 	}
 end
 
 function update_sim(s)
 	s.t=s.t+1
-	local r=flr(rnd(10)) 
+	
 	for x=0,s.w-1 do
-		-- Materials that move down. Do you mean "move up"? - Andrew
-		local sim_steam=s.t%4==0
+		local r=flr(rnd(10)) 
+
+		-- Materials that move down.
+		for y=s.h,0,-1 do
+			local c=s:g(x,y)
+			if c~=0 and c~=13 and c~=6 then
+				-- Random movement for liquid algorithms.
+				if c==10 then
+					local dx=-1+2*(r%2)
+					local dy=-1+2*((x-y-r)%2)
+					local m=s:try(x,y,x+dx,y+dy)
+				elseif c==9 then
+					-- Try falling if there is no support.
+					local fell=false
+					if s:perm(x,y,x,y+1) and s:perm(x,y,x-1,y+1) and s:perm(x,y,x+1,y+1) then
+						fell=s:try(x,y,x,y+1)
+					end
+
+					-- Fenwick tree growing.
+					if not fell and r>8 then
+						local dx=-1+flr(rnd(3))
+						if s:perm(x,y,x,y-1) and s:perm(x,y,x+dx,y-1) and s:neigh(x+dx,y-1,9)==1 then 
+							s:s(x+dx,y-1,9)
+						end
+					end
+				else
+					-- Basic falling.
+					local fell=s:try(x,y,x,y+1)
+					if c~=14 then
+						fell=fell or (s:perm(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
+						(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
+					end
+
+					-- Liquid horizontal movement.
+					local mov=false
+					if not fell and c~=10 and c~=14 then
+						local d=1
+						if y%2==0 then d=-1 end
+						mov=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
+					end 
+
+	
+				end
+			end
+		end
+		
+		-- Materials that move up.
+		local sim_steam=s.t%2==0
 		for y=0,s.h-1 do
 			local c=s:g(x,y)
 			if sim_steam and c==6 then
@@ -96,25 +150,6 @@ function update_sim(s)
 					if y%2==0 then d=-1 end
 					local m=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
 				end 
-			end
-		end
-
-		-- Materials that move down.
-		for y=s.h,0,-1 do
-			local c=s:g(x,y)
-			if c~=0 and c~=13 and c~=6 then
-				-- Basic falling.
-				local fell=s:try(x,y,x,y+1) or 
-				(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
-				(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
-
-				-- Liquid horizontal movement.
-				if not fell and c~=10 then
-					local d=1
-					if y%2==0 then d=-1 end
-					local m=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
-				end 
-
 			end
 		end
 	end
@@ -189,7 +224,7 @@ function check_recipe(c1, c2)
 	
 	-- invalid recipe -> do nothing
 	else
-		return -1
+		return nil
 	end
 end
 

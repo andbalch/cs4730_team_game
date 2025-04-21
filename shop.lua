@@ -1,6 +1,6 @@
 prices={
     70, -- holy tears 3rd
-    50, -- spesi cola 2nd
+    50, -- spesi  2nd
     70, -- sweat of newt 3rd
     30, -- fortified runes 1st
     50, -- gaseous materia 2nd

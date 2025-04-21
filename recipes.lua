@@ -15,7 +15,6 @@ pg_bk_box={x=110,y=116,w=8,h=8}
 pg_bk_hov=false
 
 function init_recipes()
-
     recipe_book = {}
     recipe_book[1] = create_recipe(12, 15, 7, true)
     recipe_book[2] = create_recipe(14, 15, 4, true)
@@ -32,7 +31,6 @@ function init_recipes()
 end
 
 function create_recipe(ing_1, ing_2, result, discovered)
-
     local recipe = {}
     recipe.ing_1 = ing_1
     recipe.ing_2 = ing_2
@@ -43,7 +41,6 @@ function create_recipe(ing_1, ing_2, result, discovered)
 end
 
 function write_recipe(rp, index)
-
     -- Write ingredient 1.
     rect(30, 15+(index*14), 36, 21+(index*14), 13)
     rectfill(31, 16+(index*14), 35, 20+(index*14), rp.ing_1)
@@ -73,7 +70,8 @@ end
 
 
 function recipes_update()
-
+    update_bubbles()
+    
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
          mode="brew"
@@ -81,19 +79,20 @@ function recipes_update()
 
     pg_bk_hov=coll(pg_bk_box,mx,my) and current_page > 1
     if pg_bk_hov and mp then
-         current_page -= 1
+        current_page -= 1
     end
 
     pg_fwd_hov=coll(pg_fwd_box,mx,my) and current_page < max_page
     if pg_fwd_hov and mp then
-         current_page += 1
+        current_page += 1
     end
 end
 
 
 function recipes_draw()
+    draw_bubbles()
 
-    rb = {
+    local rb = {
         x = 20,
         y = 10,
         w = 80,
