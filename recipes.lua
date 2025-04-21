@@ -79,14 +79,14 @@ function recipes_update()
          mode="brew"
     end
 
-    pg_bk_hov=coll(pg_bk_box,mx,my)
+    pg_bk_hov=coll(pg_bk_box,mx,my) and current_page > 1
     if pg_bk_hov and mp then
-         mode="brew"
+         current_page -= 1
     end
 
-    pg_fwd_hov=coll(pg_fwd_box,mx,my)
+    pg_fwd_hov=coll(pg_fwd_box,mx,my) and current_page < max_page
     if pg_fwd_hov and mp then
-         mode="brew"
+         current_page += 1
     end
 end
 
@@ -137,6 +137,9 @@ function recipes_draw()
     for i = 1,#recipe_book do
         write_recipe(recipe_book[i], i-1)
     end
+
+    -- Print page number on page.
+    print(current_page, 95, 114, 13)
 
     -- Draw back button.
     spr(3,back_box.x,back_box.y)
