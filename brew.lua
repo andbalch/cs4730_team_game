@@ -237,7 +237,7 @@ function serve()
 	end
 
 	-- Increase score.
-	gold = gold + score
+	gold = flr(gold + score)
 
 	-- Transition to next order
 	order_i = new_order()
