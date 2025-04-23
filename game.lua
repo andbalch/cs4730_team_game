@@ -51,7 +51,7 @@ names={
 	"wyrmwood oil",
 }
 
-pot_lim = #potions
+pot_lim = #potions - 4
 time_lim = 60
 time_penalty = 0.10
 -- Modify this to change how fast the timer counts down (greater -> faster)!
@@ -70,7 +70,7 @@ end
 -- Sets up variables for a game.
 function setup_game()
     -- Game variables.
-    gold=20
+    gold=100
     holding=nil
 	cust=gen_cust()
 
