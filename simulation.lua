@@ -12,11 +12,11 @@ function create_sim(x,y,w,h)
 		b[cx]=col
 	end
 
-	-- Column changes and activity.
-	local cc={} 
-	local ca={}
-	for cy=0,h-1 do 
-		ca[cy]=0
+	-- Row changes and activity.
+	local rc={} 
+	local ra={}
+	for ry=0,h-1 do 
+		ra[ry]=0
 	end
 
 	return {
@@ -25,8 +25,8 @@ function create_sim(x,y,w,h)
 		w=w,
 		h=h,
 		b=b,
-		cc=cc,
-		ca=ca,
+		rc=rc,
+		ra=ra,
 		t=0,
 		inactivity=0,
 		change=false,
@@ -44,8 +44,9 @@ function create_sim(x,y,w,h)
 			if(col~=nil) then
 				col[y]=c
 				s.change=true
-				s.cc[y]=s.cc[y]+1
-				s.ca[y]=0
+				s.inactivity=0
+				s.rc[y]=true
+				s.ra[y]=0
 			end
 		end,
 		-- Swaps (x1,y2) with (x2,y2).
@@ -106,7 +107,7 @@ function update_sim(s)
 	s.t=s.t+1
 	s.change=false
 	for y=-1,s.h do 
-		s.cc[y]=0 
+		s.rc[y]=false
 	end
 
 	if s.inactivity<60 then
@@ -114,7 +115,7 @@ function update_sim(s)
 			s.r=flr(rnd(10)) 
 			-- Materials that move down.
 			for y=s.h-1,0,-1 do
-				if s.ca[y]<60 then -- If the row is active.
+				if s.ra[y]<60 then -- If the row is active.
 					local c=s:g(x,y)
 					if c~=0 and c~=13 and c~=6 then
 						-- Random movement for liquid algorithms.
@@ -186,7 +187,7 @@ function update_sim(s)
 			-- Materials that move up.
 			local sim_steam=s.t%2==0
 			for y=0,s.h-1 do
-				if s.ca[y]<60 then -- If the row is active.
+				if s.ra[y]<60 then -- If the row is active.
 					local c=s:g(x,y)
 					if sim_steam and c==6 then
 						local d=-1+((s.r+x+y)%3)
@@ -207,8 +208,8 @@ function update_sim(s)
 		
 		-- Update row activity.
 		for y=0,s.h-1 do 
-			if s.cc[y]==0 then
-				s.ca[y]=s.ca[y]+1
+			if not s.rc[y] then
+				s.ra[y]=s.ra[y]+1
 			end
 		end
 
