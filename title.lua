@@ -1,8 +1,8 @@
 -- Initialize bubbles.
 bubbles={}
 bubble_spd=1
-for i=1,1000 do
-    bubbles[i]={x=rnd(128),y=rnd(128),r=10+rnd(10),c=1+flr(rnd(2)),s=rnd(1)}
+for i=1,400 do
+    bubbles[i]={x=rnd(128),y=rnd(128),r=4+rnd(16),c=1+flr(rnd(2)),s=0.2+rnd(0.8)}
 end
 
 

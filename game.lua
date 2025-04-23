@@ -113,13 +113,6 @@ function _update60()
 
 	-- Update error timer.
 	error_timer=error_timer-1
-
-	-- Update simulations.
-	update_sim(caul1)
-	update_sim(caul2)
-	for i=0,7 do
-		update_sim(vials[i])
-	end
 		
     -- Screen specific updates.
 	if mode=="title" then
@@ -161,6 +154,8 @@ function _draw()
 	if md or holding then ms=2 end
 	spr(ms,mx,my)
 
+	-- Draw frame count.
+	oprint(stat(7),116,121,7)
 end
 
 

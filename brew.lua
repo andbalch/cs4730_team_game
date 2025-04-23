@@ -13,6 +13,13 @@ transfer_mode=nil
 function brew_update()
 	viewing=nil
 
+	-- Update simulations.
+	update_sim(caul1)
+	update_sim(caul2)
+	for i=0,7 do
+		update_sim(vials[i])
+	end
+
 	-- Picking, placing, and serving vials.
 	for i=0,7 do
 		local s=slots[i]
@@ -183,8 +190,6 @@ function brew_draw()
 	elseif transfer_mode=="collect" then
 		oprint("collecting...",76,121,7)
 	end
-	-- Draw frame count.
-	--print(stat(7),116,120,7)
 end
 
 -- Procedures --
