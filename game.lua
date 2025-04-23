@@ -26,7 +26,7 @@ potions = {
 
 	-- 3rd order potion: Req. primary ingredients and/or 2nd order potions
 	{c=3, n="sweat of\nnewt"},		-- <- wyrmwood oil (15) + gaseous materia (5) 
-	{c=6, n="dew of\nmiasma"},		-- <- caustic dreams (7) + gaseous materia (5)
+	{c=6, n="steam"},		-- <- caustic dreams (7) + gaseous materia (5)
 	{c=9, n="fenwick\ntree"},		-- <- fortified runes (4) + spesi cola (2)
 	{c=1, n="holy\ntears"},			-- <- fortified runes (4) + sweat of newt (3)
 	{c=10, n="liquid\nalgorithms"},	-- <- fenwick tree (9) + holy tears (1)
@@ -39,7 +39,7 @@ names={
 	"sweat of newt",
 	"fortified runes",
 	"gaseous materia",
-	"dew of miasma",
+	"steam",
 	"caustic dreams",
 	"dragon's blood",
 	"fenwick tree",
