@@ -70,7 +70,7 @@ end
 -- Sets up variables for a game.
 function setup_game()
     -- Game variables.
-    gold=42
+    gold=20
     holding=nil
 	cust=gen_cust()
 
