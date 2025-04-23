@@ -2,7 +2,8 @@ density={0,10,8,9,4,10,1,12,11,20,20,5,5,99,20,10,10,0,0}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
-	local b={}
+	local b={} -- Cell buffer.
+	
 	for cx=0,w-1 do
 		local col={}
 		for cy=0,h-1 do
@@ -11,12 +12,21 @@ function create_sim(x,y,w,h)
 		b[cx]=col
 	end
 
+	-- Column changes and activity.
+	local cc={} 
+	local ca={}
+	for cy=0,h-1 do 
+		ca[cy]=0
+	end
+
 	return {
 		x=x,
 		y=y,
 		w=w,
 		h=h,
 		b=b,
+		cc=cc,
+		ca=ca,
 		t=0,
 		inactivity=0,
 		change=false,
@@ -33,7 +43,9 @@ function create_sim(x,y,w,h)
 			local col=s.b[x]
 			if(col~=nil) then
 				col[y]=c
-				s.inactivity=0
+				s.change=true
+				s.cc[y]=s.cc[y]+1
+				s.ca[y]=0
 			end
 		end,
 		-- Swaps (x1,y2) with (x2,y2).
@@ -93,98 +105,114 @@ end
 function update_sim(s)
 	s.t=s.t+1
 	s.change=false
+	for y=-1,s.h do 
+		s.cc[y]=0 
+	end
+
 	if s.inactivity<60 then
 		for x=0,s.w-1 do
 			s.r=flr(rnd(10)) 
 			-- Materials that move down.
-			for y=s.h,0,-1 do
-				local c=s:g(x,y)
-				if c~=0 and c~=13 and c~=6 then
-					-- Random movement for liquid algorithms.
-					if c==10 then
-						local dx=-1+2*(s.r%2)
-						local dy=((x-y-s.r)%2)
-						local m=s:try(x,y,x+dx,y+dy)
-					elseif c==9 then -- Fenwick tree growth.
-						local dissolve=false
-						if s:neigh(x,y,12)>=2 then -- Dissolve in water.
-							s:s(x,y,12)
-							dissolve=true
-							discover(9,12,0)
-						end
-
-						-- Try falling if there is no support.
-						local fell=false
-						if not dissolve and s:perm(x,y,x,y+1) and s:perm(x,y,x-1,y+1) and s:perm(x,y,x+1,y+1) then
-							fell=s:try(x,y,x,y+1)
-						end
-
-						-- Fenwick tree growing.
-						if not fell and s.r>8 then
-							local dx=-1+flr(rnd(3))
-							if s:perm(x,y,x,y-1) and s:perm(x,y,x+dx,y-1) and s:neigh(x+dx,y-1,9)<=1 then 
-								s:s(x+dx,y-1,9)
+			for y=s.h-1,0,-1 do
+				if s.ca[y]<60 then -- If the row is active.
+					local c=s:g(x,y)
+					if c~=0 and c~=13 and c~=6 then
+						-- Random movement for liquid algorithms.
+						if c==10 then
+							local dx=-1+2*(s.r%2)
+							local dy=((x-y-s.r)%2)
+							local m=s:try(x,y,x+dx,y+dy)
+						elseif c==9 then -- Fenwick tree growth.
+							local dissolve=false
+							if s:neigh(x,y,12)>=2 then -- Dissolve in water.
+								s:s(x,y,12)
+								dissolve=true
+								discover(9,12,0)
 							end
-						end
-
-					elseif c==16 then -- Fire.
-						-- Convert all non-glass non-steam into more fire.
-						local sc=s:neigh(x,y,6)
-						for dx=-1,1 do
-							for dy=-1,1 do
-								local nc=s:g(x+dx,y+dy)	
-								if sc==0 and nc~=13 and nc~=6 and nc~=16 then 
-									s:s(x+dx,y+dy,16)
-									discover(16,nc,16)
+	
+							-- Try falling if there is no support.
+							local fell=false
+							if not dissolve and s:perm(x,y,x,y+1) and s:perm(x,y,x-1,y+1) and s:perm(x,y,x+1,y+1) then
+								fell=s:try(x,y,x,y+1)
+							end
+	
+							-- Fenwick tree growing.
+							if not fell and s.r>8 then
+								local dx=-1+flr(rnd(3))
+								if s:perm(x,y,x,y-1) and s:perm(x,y,x+dx,y-1) and s:neigh(x+dx,y-1,9)<=1 then 
+									s:s(x+dx,y-1,9)
 								end
 							end
+	
+						elseif c==16 then -- Fire.
+							-- Convert all non-glass non-steam into more fire.
+							local sc=s:neigh(x,y,6)
+							for dx=-1,1 do
+								for dy=-1,1 do
+									local nc=s:g(x+dx,y+dy)	
+									if sc==0 and nc~=13 and nc~=6 and nc~=16 then 
+										s:s(x+dx,y+dy,16)
+										discover(16,nc,16)
+									end
+								end
+							end
+	
+							-- Randomly dissapear.
+							if (s.r+x+y)%2==0 then
+								s:s(x,y,6)
+							end
+	
+						-- Basic behaviours.
+						else
+							-- Basic falling.
+							local fell=s:try(x,y,x,y+1)
+							if c~=14 then
+								fell=fell or (s:perm(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
+								(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
+							end
+	
+							-- Liquid horizontal movement.
+							local mov=false
+							if not fell and c~=10 and c~=14 then
+								local d=1
+								if (y+s.r)%2==0 then d=-1 end
+								mov=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
+							end 
 						end
-
-						-- Randomly dissapear.
-						if (s.r+x+y)%2==0 then
-							s:s(x,y,6)
-						end
-
-					-- Basic behaviours.
-					else
-						-- Basic falling.
-						local fell=s:try(x,y,x,y+1)
-						if c~=14 then
-							fell=fell or (s:perm(x,y,x+1,y) and s:try(x,y,x+1,y+1)) or 
-							(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y+1))
-						end
-
-						-- Liquid horizontal movement.
-						local mov=false
-						if not fell and c~=10 and c~=14 then
-							local d=1
-							if (y+s.r)%2==0 then d=-1 end
-							mov=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
-						end 
 					end
-				end
+				end				
 			end
 			
 			-- Materials that move up.
 			local sim_steam=s.t%2==0
 			for y=0,s.h-1 do
-				local c=s:g(x,y)
-				if sim_steam and c==6 then
-					local d=-1+((s.r+x+y)%3)
-					-- Steam falls up.
-					local float=s:try(x,y,x,y-1) or 
-					(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y-1)) or 
-					(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y-1))
-
-					if not float then
-						local d=1
-						if y%2==0 then d=-1 end
-						local m=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
-					end 
+				if s.ca[y]<60 then -- If the row is active.
+					local c=s:g(x,y)
+					if sim_steam and c==6 then
+						local d=-1+((s.r+x+y)%3)
+						-- Steam falls up.
+						local float=s:try(x,y,x,y-1) or 
+						(s:perm(x,y,x+1,y) and s:try(x,y,x+1,y-1)) or 
+						(s:perm(x,y,x-1,y) and s:try(x,y,x-1,y-1))
+	
+						if not float then
+							local d=1
+							if y%2==0 then d=-1 end
+							local m=s:try(x,y,x+d,y,c) or s:try(x,y,x-d,y,c)
+						end 
+					end
 				end
 			end
 		end
 		
+		-- Update row activity.
+		for y=0,s.h-1 do 
+			if s.cc[y]==0 then
+				s.ca[y]=s.ca[y]+1
+			end
+		end
+
+		-- Update simulation activity.
 		if not s.change then
 			s.inactivity=s.inactivity+1
 		end

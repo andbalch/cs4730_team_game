@@ -105,8 +105,8 @@ music(4)
 
 function _update60()
     -- Get mouse input.
-	mx=stat(32)
-	my=stat(33)
+	mx=mid(0,stat(32),127)
+	my=mid(0,stat(33),127)
 	md=stat(34)==1
 	mp=mdp and not md
 	msp=md and not mdp
