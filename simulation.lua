@@ -1,4 +1,4 @@
-density={0,10,8,9,4,10,1,12,11,20,20,5,5,99,20,10}
+density={0,10,8,9,4,10,1,12,11,20,20,5,5,99,20,10,0}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
@@ -59,17 +59,9 @@ function create_sim(x,y,w,h)
 					-- Check if c1 and c2 make a recipe or reaction
 					else
 						prod=check_recipe(c1, c2)
-						if prod~=nil and prod <= 15 then 
+						if prod~=nil then 
 							s:s(x1,y1,prod)
 							s:s(x2,y2,prod)
-							return true
-						elseif prod == 16 then
-							-- Overflow!
-							overwrite(s, 12)
-							return true
-						elseif prod == 17 then
-							-- Explosion!
-							overwrite(s, 0)
 							return true
 						end
 					end
@@ -109,11 +101,12 @@ function update_sim(s)
 					local dx=-1+2*(s.r%2)
 					local dy=((x-y-s.r)%2)
 					local m=s:try(x,y,x+dx,y+dy)
-				elseif c==9 then
+				elseif c==9 then -- Fenwick tree growth.
 					local dissolve=false
-					if s:neigh(x,y,12)>=2 then
+					if s:neigh(x,y,12)>=2 then -- Dissolve in water.
 						s:s(x,y,12)
 						dissolve=true
+						discover(9,12,0)
 					end
 
 					-- Try falling if there is no support.
@@ -130,7 +123,25 @@ function update_sim(s)
 						end
 					end
 
-					
+				elseif c==16 then -- Fire.
+					-- Convert all non-glass non-steam into more fire.
+					local sc=s:neigh(x,y,6)
+					for dx=-1,1 do
+						for dy=-1,1 do
+							local nc=s:g(x+dx,y+dy)	
+							if sc==0 and nc~=13 and nc~=6 and nc~=16 then 
+								s:s(x+dx,y+dy,16)
+								discover(16,nc,16)
+							end
+						end
+					end
+
+					-- Randomly dissapear.
+					if (s.r+x+y)%2==0 then
+						s:s(x,y,6)
+					end
+
+				-- Basic behaviours.
 				else
 					-- Basic falling.
 					local fell=s:try(x,y,x,y+1)
@@ -175,69 +186,76 @@ function draw_sim(s,dx,dy)
 	for x=0,s.w do
 		for y=0,s.h do
 			local c=s:g(x,y)
-			sset(s.x+x,s.y+y,c)
+			if c<16 then
+				sset(s.x+x,s.y+y,c)
+			elseif c==16 then -- Draw fire.
+				sset(s.x+x,s.y+y,8+(s.t+x+y)%3)
+			end
 		end
 	end
 	sspr(s.x,s.y,s.w,s.h,dx,dy,s.w,s.h)
 end
 
--- Helper function to compare adjacent cell colors and see if they make a potion/reaction
+-- Compares cell colors and see if their mixing causes a reaction.
 function check_recipe(c1, c2)
 	-- caustic dreams
-	if cmp_cells(c1, c2, 12, 15) then
-		recipe_book[1].discovered = true
+	if cmp(c1, c2, 12, 15) then
+		discover(c1,c2,7)
 		return 7
 	-- fortified runes
-	elseif cmp_cells(c1, c2, 15, 14) then
-		recipe_book[2].discovered = true
+	elseif cmp(c1, c2, 15, 14) then
+		discover(c1,c2,4)
 		return 4
 	-- gaseous materia
-	elseif cmp_cells(c1, c2, 12, 4) then
-		recipe_book[3].discovered = true
+	elseif cmp(c1, c2, 12, 4) then
+		discover(c1,c2,5)
 		return 5
 	-- dragon's blood
-	elseif cmp_cells(c1, c2, 7, 14) then
-		recipe_book[4].discovered = true
+	elseif cmp(c1, c2, 7, 14) then
+		discover(c1,c2,6)
 		return 8
 	-- spesi cola
-	elseif cmp_cells(c1, c2, 4, 7) then
-		recipe_book[5].discovered = true
+	elseif cmp(c1, c2, 4, 7) then
+		discover(c1,c2,2)
 		return 2
 	-- sweat of newt
-	elseif cmp_cells(c1, c2, 15, 5) then
-		recipe_book[6].discovered = true
+	elseif cmp(c1, c2, 15, 5) then
+		discover(c1,c2,3)
 		return 3
 	-- dew of miasma
-	elseif cmp_cells(c1, c2, 7, 5) then
-		recipe_book[7].discovered = true
+	elseif cmp(c1, c2, 7, 5) then
+		discover(c1,c2,6)
 		return 6
 	-- fenwick tree
-	elseif cmp_cells(c1, c2, 2, 4) then
+	elseif cmp(c1, c2, 2, 4) then
+		discover(c1,c2,9)
 		return 9
 	-- holy tears
-	elseif cmp_cells(c1, c2, 3, 4) then
+	elseif cmp(c1, c2, 3, 4) then
+		discover(c1,c2,1)
 		return 1
 	-- liquid algorithms
-	elseif cmp_cells(c1, c2, 9, 1) then
+	elseif cmp(c1, c2, 9, 1) then
+		discover(c1,c2,10)
 		return 10
 
 	-- TODO: expand to include dangerous reactions. Can indicate these with a global or by returning a val > 15?
 	-- Overflow: water (12) + fairy dust (14)
-	elseif cmp_cells(c1, c2, 12, 14) then
+	elseif cmp(c1, c2, 12, 14) then
 		-- cauldron is completely filled with fairy dust (or water? whichever)
 		return 16
 	
 		-- Explosion: dragon's blood (8) + spesi cola (2) 
-	elseif cmp_cells(c1, c2, 8, 2) then
+	elseif cmp(c1, c2, 8, 2) then
 		-- screen flashes and everything in the cauldron is gone?
 		return 17
 	
 		-- Double time: holy tears (1) + spesi cola (2)
-	elseif cmp_cells(c1, c2, 2, 1) then
+	elseif cmp(c1, c2, 2, 1) then
 		-- change time_mod parameter to 2, make sure to change back!
 	
 		-- Half profit: dew of miasma (6) + gaseous materia (5)
-	elseif cmp_cells(c1, c2, 6, 5) then
+	elseif cmp(c1, c2, 6, 5) then
 		-- exactly what it sounds, need some sort of a global profit var to modify
 	
 	-- invalid recipe -> do nothing
@@ -247,8 +265,8 @@ function check_recipe(c1, c2)
 end
 
 -- Helper code to check if some combination of c1 and c2 are equal to v1 and v2
-function cmp_cells(c1, c2, v1, v2)
-	return (c1 == v1 and c2 == v2) or (c1 == v2 and c2 == v1)
+function cmp(c1, c2, v1, v2)
+	return (c1==v1 and c2==v2) or (c1==v2 and c2==v1)
 end
 
 -- overwrites every cell in the current simulation to color c, useful for overflow and explosion effects

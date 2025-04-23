@@ -14,64 +14,25 @@ pg_fwd_hov=false
 pg_bk_box={x=110,y=116,w=8,h=8}
 pg_bk_hov=false
 
-function init_recipes()
-    recipe_book = {}
-    recipe_book[1] = create_recipe(12, 15, 7, true)
-    recipe_book[2] = create_recipe(14, 15, 4, true)
-    recipe_book[3] = create_recipe(12, 4, 5, false)
-    recipe_book[4] = create_recipe(14, 7, 8, false)
-    recipe_book[5] = create_recipe(4, 7, 2, false)
-    recipe_book[6] = create_recipe(15, 5, 3, false)
-    recipe_book[7] = create_recipe(7, 5, 6, false)
-
-    recipe_book[8] = create_recipe(4, 2, 9, false)
-    recipe_book[9] = create_recipe(4, 3, 1, false)
-    recipe_book[10] = create_recipe(9, 1, 10, false)
-
-end
-
-function create_recipe(ing_1, ing_2, result, discovered)
-    local recipe = {}
-    recipe.ing_1 = ing_1
-    recipe.ing_2 = ing_2
-    recipe.result = result
-    recipe.discovered = discovered
-    return recipe
-
-end
-
-function write_recipe(rp, index)
-    -- Write ingredient 1.
-    rect(30, 15+(index*14), 36, 21+(index*14), 13)
-    rectfill(31, 16+(index*14), 35, 20+(index*14), rp.ing_1)
-    
-    -- Write ingredient 2.
-    rect(50, 15+(index*14), 56, 21+(index*14), 13)
-    rectfill(51, 16+(index*14), 55, 20+(index*14), rp.ing_2)
-
-    -- Write result, or question mark if recipe is not yet discovered.
-    if rp.discovered then
-        rect(80, 15+(index*14), 86, 21+(index*14), 13)
-        rectfill(81, 16+(index*14), 85, 20+(index*14), rp.result)
-    else
-        print("?", 81, 16+(index*14), 13)
-    end
-    
-    -- Plus sign.
-    rectfill(43, 16+(index*14), 43, 20+(index*14), 13)
-    rectfill(41, 18+(index*14), 45, 18+(index*14), 13)
-
-
-    -- Equal sign.
-    rectfill(66, 17+(index*14), 70, 17+(index*14), 13)
-    rectfill(66, 19+(index*14), 70, 19+(index*14), 13)
-
-end
-
+entries={}
 
 function recipes_update()
     update_bubbles()
     
+    -- Collect entries.
+    entries={}
+    for i=0,17 do
+        if recipe_book[i]~=nil then
+            for j=0,17 do
+                local res=recipe_book[i][j]
+                if res~=nil then
+                    entry={c1=i,c2=j,c3=res}
+                    add(entries,entry)
+                end
+            end
+        end
+    end
+
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
          mode="brew"
@@ -79,12 +40,12 @@ function recipes_update()
 
     pg_bk_hov=coll(pg_bk_box,mx,my) and current_page > 1
     if pg_bk_hov and mp then
-        current_page -= 1
+        current_page=current_page-1
     end
 
     pg_fwd_hov=coll(pg_fwd_box,mx,my) and current_page < max_page
     if pg_fwd_hov and mp then
-        current_page += 1
+        current_page=current_page+1
     end
 end
 
@@ -131,15 +92,15 @@ function recipes_draw()
         line(18, i*5 + 12, 22, i*5 + 14, 13) -- book binding
     end
 
-
-    -- Write recipes on page.
+    -- Write recipe entries on page.
+    print(#entries)
     if current_page == 1 then
-        for i = 1,7 do
-            write_recipe(recipe_book[i], i-1)
+        for i=1,min(8,#entries) do
+            draw_entry(entries[i],i-1)
         end
     else
-        for i = 8,#recipe_book do
-            write_recipe(recipe_book[i], i-8)
+        for i=9,#entries do
+            draw_entry(entries[i],i-8)
         end
     end
 
@@ -163,4 +124,52 @@ function recipes_draw()
     if pg_bk_hov then 
         draw_box_outline(pg_bk_box)
     end
+end
+
+
+-- Draws a single recipe entry.
+function draw_entry(entry, index)
+    -- Write ingredient 1.
+    rect(30, 15+(index*14), 36, 21+(index*14), 13)
+    local c1=entry.c1
+    if c1==16 then
+        c1=8+flr(rnd(3))
+    end
+    rectfill(31, 16+(index*14), 35, 20+(index*14), c1)
+    
+    -- Write ingredient 2.
+    rect(50, 15+(index*14), 56, 21+(index*14), 13)
+    local c2=entry.c2
+    if c2==16 then
+        c2=8+flr(rnd(3))
+    end
+    rectfill(51, 16+(index*14), 55, 20+(index*14), c2)
+
+    -- Write result.
+    rect(80, 15+(index*14), 86, 21+(index*14), 13)
+    rectfill(81, 16+(index*14), 85, 20+(index*14), entry.c3)
+    
+    -- Plus sign.
+    rectfill(43, 16+(index*14), 43, 20+(index*14), 13)
+    rectfill(41, 18+(index*14), 45, 18+(index*14), 13)
+
+    -- Equal sign.
+    rectfill(66, 17+(index*14), 70, 17+(index*14), 13)
+    rectfill(66, 19+(index*14), 70, 19+(index*14), 13)
+
+end
+
+
+
+-- Adds a new discovery to the recipe book.
+function discover(c1,c2,c3)
+    if c1>c2 then 
+        local tmp=c1
+        c1=c2
+        c2=tmp
+    end
+    if recipe_book[c1]==nil then
+        recipe_book[c1]={}
+    end
+    recipe_book[c1][c2]=c3
 end

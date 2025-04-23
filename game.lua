@@ -78,8 +78,8 @@ function setup_game()
 	vox=0 -- Vial offset from the mouse.
 	voy=0
 
-	-- Initialize recipe book.
-	init_recipes()
+	-- Recipe book.
+	recipe_book={}
 
 	-- Create simulations.
 	caul1=create_sim(0, 32,32,32)
@@ -164,7 +164,8 @@ end
 
 -- Utility Functions --
 
-function error(str)
+-- Sets an error message for a second.
+function err(str)
 	error_str=str
 	error_timer=30
 end

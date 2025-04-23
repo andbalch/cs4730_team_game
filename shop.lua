@@ -111,8 +111,8 @@ function buy_vial(c)
                 return
             end
         end
-        error("no space!")
+        err("no space!")
     else
-        error("too poor!")
+        err("too poor!")
     end
 end
