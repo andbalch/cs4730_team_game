@@ -15,7 +15,7 @@ function create_sim(x,y,w,h)
 	-- Row changes and activity.
 	local rc={} 
 	local ra={}
-	for ry=0,h-1 do 
+	for ry=-1,h do 
 		ra[ry]=0
 	end
 
@@ -115,7 +115,7 @@ function update_sim(s)
 			s.r=flr(rnd(10)) 
 			-- Materials that move down.
 			for y=s.h-1,0,-1 do
-				if s.ra[y]<60 then -- If the row is active.
+				if s.ra[y]<60 or s.ra[y+1]<60 or s.ra[y-1]<60 then -- If the row is active.
 					local c=s:g(x,y)
 					if c~=0 and c~=13 and c~=6 then
 						-- Random movement for liquid algorithms.
@@ -187,7 +187,7 @@ function update_sim(s)
 			-- Materials that move up.
 			local sim_steam=s.t%2==0
 			for y=0,s.h-1 do
-				if s.ra[y]<60 then -- If the row is active.
+				if s.ra[y]<60 or s.ra[y+1]<60 or s.ra[y-1]<60 then -- If the row is active.
 					local c=s:g(x,y)
 					if sim_steam and c==6 then
 						local d=-1+((s.r+x+y)%3)
