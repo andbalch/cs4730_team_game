@@ -151,13 +151,14 @@ function brew_draw()
 
 	-- Timer countdown until penalty occurs
 	-- TODO: Timer fucked up...
-	time_str = ""
+	local time_str = ""
 	local d_t = flr((t() - pot_timer) * 3 * time_mod) -- '*3' roughly controls for how pico8 handles time, given update runs 30 times per sec
 	if (d_t < time_lim) then
 		d_t = time_lim - d_t
 		time_c = 6
 	else
 		-- out of time!!
+		d_t = d_t - time_lim
 		time_str = time_str .. "-"
 		time_c = 8
 	end
