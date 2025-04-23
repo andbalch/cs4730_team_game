@@ -6,7 +6,7 @@
 -- TODO: maybe show name on hover on this page (and maybe shop as well)?
 
 current_page = 1
-max_page = 2
+max_page = 1
 
 pg_fwd_box={x=119,y=116,w=8,h=8}
 pg_fwd_hov=false
@@ -32,6 +32,7 @@ function recipes_update()
             end
         end
     end
+    max_page=ceil(#entries/8)
 
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
@@ -94,15 +95,11 @@ function recipes_draw()
 
     -- Write recipe entries on page.
     print(#entries)
-    if current_page == 1 then
-        for i=1,min(8,#entries) do
-            draw_entry(entries[i],i-1)
-        end
-    else
-        for i=9,#entries do
-            draw_entry(entries[i],i-8)
-        end
+    local ps=1+(current_page-1)*8
+    for i=ps,min(ps+7,#entries) do
+        draw_entry(entries[i],i-ps)
     end
+
 
     -- Print page number on page.
     print(current_page, 95, 114, 13)
@@ -114,48 +111,54 @@ function recipes_draw()
     end
 
     -- Draw page forward button.
-    spr(28,pg_fwd_box.x,pg_fwd_box.y)
-    if pg_fwd_hov then 
-        draw_box_outline(pg_fwd_box)
+    if current_page~=max_page then
+        spr(28,pg_fwd_box.x,pg_fwd_box.y)
+        if pg_fwd_hov then 
+            draw_box_outline(pg_fwd_box)
+        end
     end
 
+
     -- Draw page back button.
-    spr(27,pg_bk_box.x,pg_bk_box.y)
-    if pg_bk_hov then 
-        draw_box_outline(pg_bk_box)
+    if current_page~=1 then
+        spr(27,pg_bk_box.x,pg_bk_box.y)
+        if pg_bk_hov then 
+            draw_box_outline(pg_bk_box)
+        end
     end
 end
 
 
 -- Draws a single recipe entry.
 function draw_entry(entry, index)
+    local y=index*14
     -- Write ingredient 1.
-    rect(30, 15+(index*14), 36, 21+(index*14), 13)
+    rect(30, 15+y, 36, 21+y, 13)
     local c1=entry.c1
     if c1==16 then
         c1=8+flr(rnd(3))
     end
-    rectfill(31, 16+(index*14), 35, 20+(index*14), c1)
+    rectfill(31, 16+y, 35, 20+y, c1)
     
     -- Write ingredient 2.
-    rect(50, 15+(index*14), 56, 21+(index*14), 13)
+    rect(50, 15+y, 56, 21+y, 13)
     local c2=entry.c2
     if c2==16 then
         c2=8+flr(rnd(3))
     end
-    rectfill(51, 16+(index*14), 55, 20+(index*14), c2)
+    rectfill(51, 16+y, 55, 20+y, c2)
 
     -- Write result.
-    rect(80, 15+(index*14), 86, 21+(index*14), 13)
-    rectfill(81, 16+(index*14), 85, 20+(index*14), entry.c3)
+    rect(80, 15+y, 86, 21+y, 13)
+    rectfill(81, 16+y, 85, 20+y, entry.c3)
     
     -- Plus sign.
-    rectfill(43, 16+(index*14), 43, 20+(index*14), 13)
-    rectfill(41, 18+(index*14), 45, 18+(index*14), 13)
+    rectfill(43, 16+y, 43, 20+y, 13)
+    rectfill(41, 18+y, 45, 18+y, 13)
 
     -- Equal sign.
-    rectfill(66, 17+(index*14), 70, 17+(index*14), 13)
-    rectfill(66, 19+(index*14), 70, 19+(index*14), 13)
+    rectfill(66, 17+y, 70, 17+y, 13)
+    rectfill(66, 19+y, 70, 19+y, 13)
 
 end
 

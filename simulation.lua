@@ -1,4 +1,4 @@
-density={0,10,8,9,4,10,1,12,11,20,20,5,5,99,20,10,0}
+density={0,10,8,9,4,10,1,12,11,20,20,5,5,99,20,10,10,0,0}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
@@ -55,6 +55,7 @@ function create_sim(x,y,w,h)
 						local tc=11
 						if s.r>7 then tc=6 end
 						s:s(x2,y2,tc)
+						discover(c1,c2,6)
 						return true
 					-- Check if c1 and c2 make a recipe or reaction
 					else
