@@ -7,6 +7,7 @@ my=0
 md=false -- Mouse down.
 mdp=false -- Mouse down previous.
 mp=false -- Mouse pressed.
+msp=false -- Mouse started pressing.
 
 -- Error variables.
 error_str=nil
@@ -108,6 +109,7 @@ function _update60()
 	my=stat(33)
 	md=stat(34)==1
 	mp=mdp and not md
+	msp=md and not mdp
 
 	-- Update error timer.
 	error_timer=error_timer-1

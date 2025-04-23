@@ -18,7 +18,7 @@ function brew_update()
 		local s=slots[i]
 		if coll(s,mx,my) then -- If hovering over a slot:
 			if vials[s.v]~=nil then viewing=vials[s.v]:g(mx-s.x,my-s.y) end
-			if mp then -- If pressing slot:
+			if msp then -- If pressing slot:
 				if holding~=nil and s.v==nil then -- Place vial into a slot.
 					s.v=holding
 					holding=nil
