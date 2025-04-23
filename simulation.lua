@@ -59,9 +59,17 @@ function create_sim(x,y,w,h)
 					-- Check if c1 and c2 make a recipe or reaction
 					else
 						prod=check_recipe(c1, c2)
-						if prod~=nil then 
+						if prod~=nil and prod <= 15 then 
 							s:s(x1,y1,prod)
 							s:s(x2,y2,prod)
+							return true
+						elseif prod == 16 then
+							-- Overflow!
+							overwrite(s, 12)
+							return true
+						elseif prod == 17 then
+							-- Explosion!
+							overwrite(s, 0)
 							return true
 						end
 					end
@@ -217,10 +225,12 @@ function check_recipe(c1, c2)
 	-- Overflow: water (12) + fairy dust (14)
 	elseif cmp_cells(c1, c2, 12, 14) then
 		-- cauldron is completely filled with fairy dust (or water? whichever)
+		return 16
 	
 		-- Explosion: dragon's blood (8) + spesi cola (2) 
 	elseif cmp_cells(c1, c2, 8, 2) then
 		-- screen flashes and everything in the cauldron is gone?
+		return 17
 	
 		-- Double time: holy tears (1) + spesi cola (2)
 	elseif cmp_cells(c1, c2, 2, 1) then
@@ -239,4 +249,16 @@ end
 -- Helper code to check if some combination of c1 and c2 are equal to v1 and v2
 function cmp_cells(c1, c2, v1, v2)
 	return (c1 == v1 and c2 == v2) or (c1 == v2 and c2 == v1)
+end
+
+-- overwrites every cell in the current simulation to color c, useful for overflow and explosion effects
+function overwrite(s, c)
+	for x=0,s.w-1 do
+		for y=s.h,0,-1 do
+			local cur_c=s:g(x,y)
+			if cur_c ~= 13 then
+				s:s(x,y,c)
+			end 
+		end 
+	end
 end
