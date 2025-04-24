@@ -10,6 +10,9 @@ viewing=nil
 shop_hov=false
 transfer_mode=nil
 
+-- Timer for sound effects.
+sand_sound_timer=0
+
 function brew_update()
 	viewing=nil
 
@@ -187,6 +190,10 @@ function brew_draw()
 	-- Draw transfer mode.
 	if transfer_mode=="pour" then
 		oprint("pouring...",88,121,7)
+		if sand_sound_timer<time() then
+			sfx(0)
+			sand_sound_timer=time() + 0.3
+		end
 	elseif transfer_mode=="collect" then
 		oprint("collecting...",76,121,7)
 	end
@@ -310,6 +317,6 @@ function gen_cust()
 		w=64,
 		h=64,
 		robe_col=robe_cols[1+flr(rnd(#robe_cols))],
-		long_nose=noise
+		long_nose=nose
 	}
 end
