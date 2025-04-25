@@ -36,6 +36,8 @@ back_box={x=119,y=1,w=8,h=8}
 back_hov=false
 
 function shop_update()
+    update_bubbles()
+
     for b in all(buttons) do
         b.hov=coll(b,mx,my)
         if b.hov and mp then
@@ -51,9 +53,11 @@ end
 
 
 function shop_draw()
+    draw_bubbles()
+
     -- Draw gold count.
-	spr(4,0,0)
-	oprint(gold,9,1,10)
+	spr(4,1,1)
+	oprint(gold,10,2,10)
 
     -- Draw buttons.
     for b in all(buttons) do

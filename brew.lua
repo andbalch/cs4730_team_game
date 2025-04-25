@@ -1,6 +1,8 @@
 -- Constants.
 caul1_box={x=8,y=80,w=32,h=32}
 caul2_box={x=48,y=80,w=32,h=32}
+caul1_flip_box={x=39,y=108,w=8,h=8}
+caul2_flip_box={x=79,y=108,w=8,h=8}
 shop_box={x=119,y=1,w=7,h=8}
 recipes_box={x=108,y=1,w=9,h=8}
 can_box={x=99,y=1,w=8,h=8}
@@ -50,6 +52,16 @@ function brew_update()
 	transfer(caul2,caul2_box)
 	if not md then 
 		transfer_mode=nil
+	end
+
+	-- Clicking the cauldron flip buttons.
+	c1fhov=coll(caul1_flip_box,mx,my)
+	if c1fhov and mp then
+		caul1:flip()
+	end
+	c2fhov=coll(caul2_flip_box,mx,my)
+	if c2fhov and mp then
+		caul2:flip()
 	end
 
 	-- Clicking shop button.
@@ -126,9 +138,15 @@ function brew_draw()
 	draw_sim(caul2, caul2_box.x, caul2_box.y)
 
 	-- Draw fire under cauldron.
-	draw_fire(caul1_box)
-	draw_fire(caul2_box)
+	if not caul1.flipped then draw_fire(caul1_box) end
+	if not caul2.flipped then draw_fire(caul2_box) end
 	
+	-- Draw cauldron flip buttons.
+	spr(6,caul1_flip_box.x,caul1_flip_box.y)
+	spr(6,caul2_flip_box.x,caul2_flip_box.y)
+	if c1fhov then draw_box_outline(caul1_flip_box) end
+	if c2fhov then draw_box_outline(caul2_flip_box) end
+
 	-- Draw vials in slots.
 	for i=0,7 do
 		local s=slots[i]
@@ -151,8 +169,8 @@ function brew_draw()
 
 
 	-- Draw gold count.
-	spr(4,0,0)
-	oprint(gold,9,1,10)
+	spr(4,1,1)
+	oprint(gold,10,2,10)
 
 	-- Display current order
 	-- spr(192, 0, 16, 4, 4)

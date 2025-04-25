@@ -30,6 +30,7 @@ function create_sim(x,y,w,h)
 		t=0,
 		inactivity=0,
 		change=false,
+		flipped=false,
 		-- Gets cell (x,y).
 		g=function(s,x,y)
 			if (x>=0 and y>=0 and x<s.w and y<s.h) then
@@ -99,6 +100,31 @@ function create_sim(x,y,w,h)
 				end
 			end
 			return cnt
+		end,
+		flip=function(s)
+			s.flipped=not s.flipped
+			
+			for x=0,flr((s.w-1)/2) do
+				local ox=s.w-1-x
+				for y=0,s.h-1 do
+					local tmp=s.b[ox][y]
+					s.b[ox][y]=s.b[x][y]
+					s.b[x][y]=tmp
+				end
+			end
+			for y=0,flr((s.h-1)/2) do
+				local oy=s.h-1-y
+				for x=0,s.w-1 do	
+					local tmp=s.b[x][oy]
+					s.b[x][oy]=s.b[x][y]
+					s.b[x][y]=tmp
+				end
+			end
+
+			s.inactivity=0
+			for y=-1,s.h do
+				s.ra[y]=0
+			end
 		end
 	}
 end

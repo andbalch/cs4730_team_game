@@ -94,7 +94,6 @@ function recipes_draw()
     end
 
     -- Write recipe entries on page.
-    print(#entries)
     local ps=1+(current_page-1)*8
     for i=ps,min(ps+7,#entries) do
         draw_entry(entries[i],i-ps)
@@ -136,7 +135,7 @@ function draw_entry(entry, index)
     rect(30, 15+y, 36, 21+y, 13)
     local c1=entry.c1
     if c1==16 then
-        c1=8+flr(rnd(3))
+        c1=8+(t()*3%3)
     end
     rectfill(31, 16+y, 35, 20+y, c1)
     
@@ -144,7 +143,7 @@ function draw_entry(entry, index)
     rect(50, 15+y, 56, 21+y, 13)
     local c2=entry.c2
     if c2==16 then
-        c2=8+flr(rnd(3))
+        c2=8+(t()*3%3)
     end
     rectfill(51, 16+y, 55, 20+y, c2)
 
