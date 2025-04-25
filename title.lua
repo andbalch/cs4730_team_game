@@ -15,7 +15,8 @@ function title_update()
         -- TODO: Transition to (skippable) intro first, then go into brew mode
         mode = "brew"
     elseif btnp(🅾️) then
-        -- TODO: Pressing "O" key goes to tutorial screen
+        -- Pressing "O" key goes to tutorial screen
+        setup_tutorial()
         mode = "tutorial"
     end
 end
