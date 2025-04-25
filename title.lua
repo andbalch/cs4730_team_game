@@ -13,7 +13,10 @@ function title_update()
     if btnp(5) or md then -- ❎ key
         music(0)
         setup_game()
+        -- TODO: Transition to (skippable) intro first, then go into brew mode
         mode = "brew"
+    elseif false then
+        -- TODO: Pressing "O" key goes to tutorial screen
     end
 end
 

@@ -124,6 +124,10 @@ function _update60()
         shop_update()
 	elseif mode=="recipes" then
 		recipes_update()
+	elseif mode=="intro" then
+		-- TODO introduction
+	elseif mode=="tutorial" then
+		-- TODO display optional tutorial screen
     end
 
 	-- Update mouse down previous.
@@ -142,6 +146,10 @@ function _draw()
         shop_draw()
 	elseif mode=="recipes" then
 		recipes_draw()
+	elseif mode=="intro" then
+		-- TODO introduction
+	elseif mode=="tutorial" then
+		-- TODO display optional tutorial screen
     end
 
 	-- Draw error.
