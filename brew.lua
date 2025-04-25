@@ -117,7 +117,6 @@ function brew_draw()
 	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
 	-- Draw shop button.
-
 	spr(49,shop_box.x,shop_box.y)
 	if shop_hov then draw_box_outline(shop_box) end
 
@@ -167,7 +166,6 @@ function brew_draw()
 		draw_sim(vials[holding],mx+vox,my+voy)
 	end
 
-
 	-- Draw gold count.
 	spr(4,1,1)
 	oprint(gold,10,2,10)
@@ -175,7 +173,7 @@ function brew_draw()
 	-- Display current order
 	-- spr(192, 0, 16, 4, 4)
 	sspr(64, 96, 32, 32, 0, 9, 44, 44)
-	oprint(potions[order_i].n, 3, 16, potions[order_i].c)
+	oprint(names[potions[order_i].c], 3, 16, m2c(mx,my,potions[order_i].c))
 
 	-- Timer countdown until penalty occurs
 	local time_str = ""
@@ -201,7 +199,7 @@ function brew_draw()
 	-- Draw currently viewed cell.
 	rectfill(0,119,128,128,2)
 	if viewing~=nil then
-		oprint(names[viewing+1],2,121,viewing)
+		oprint(names[viewing+1],2,121,m2c(mx,my,viewing))
 	end
 
 	-- Draw transfer mode.

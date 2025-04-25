@@ -1,4 +1,4 @@
-density={0,10,8,20,4,10,1,12,11,9,20,5,5,99,20,10,10,0,0}
+density={0,10,8,20,4,20,1,12,11,9,2,5,5,99,20,10,10,50,0}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
@@ -126,12 +126,6 @@ function create_sim(x,y,w,h)
 				s.ra[y]=0
 			end
 		end,
-		m2c=function(s,x,y,c)
-			if c<16 then return c else
-				local cs=multicol[c]
-				return cs[1+((s.t+x+y)%#cs)]
-			end
-		end
 	}
 end
 
@@ -149,12 +143,12 @@ function update_sim(s)
 			for y=s.h-1,0,-1 do
 				if s.ra[y]<60 or s.ra[y+1]<60 or s.ra[y-1]<60 then -- If the row is active.
 					local c=s:g(x,y)
-					if c~=0 and c~=13 and c~=6 then
+					if c~=0 and c~=13 and c~=6 and c~=17 then
 						-- Random movement for dreamwood spore.
-						if c==10 then
-							local dx=-1+2*(s.r%2)
-							local dy=((x-y-s.r)%2)
-							local m=s:try(x,y,x+dx,y+dy)
+						if c==10 and s.r>5 and y~=0 then
+							local dx=-1+flr(rnd(3))
+							local dy=-flr(rnd(2))
+							local m=s:perm(x,y,x,y+dy) and s:try(x,y,x+dx,y+dy)
 						elseif c==3 then -- Fenwick tree.
 							local dissolve=false
 							if s:neigh(x,y,12)>=2 then -- Dissolve in water.
@@ -255,8 +249,8 @@ end
 function draw_sim(s,dx,dy)
 	for y=0,s.h-1 do
 		for x=0,s.w-1,2 do
-			local c1=s:m2c(x,y,s.b[x][y])
-			local c2=s:m2c(x+1,y,s.b[x+1][y])
+			local c1=m2c(x,y,s.b[x][y])
+			local c2=m2c(x+1,y,s.b[x+1][y])
 
 			-- Writes to screen.
 			local addr=0x6000+flr((x+dx)/2)+(y+dy)*64
@@ -343,4 +337,11 @@ end
 -- Helper code to check if some combination of c1 and c2 are equal to v1 and v2
 function cmp(c1, c2, v1, v2)
 	return (c1==v1 and c2==v2) or (c1==v2 and c2==v1)
+end
+
+function m2c(x,y,c)
+	if c<16 then return c else
+		local cs=multicol[c]
+		return cs[1+((flr(time()*100)+x+y)%#cs)]
+	end
 end

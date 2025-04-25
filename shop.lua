@@ -1,34 +1,15 @@
-prices={
-    70, -- holy tears 3rd
-    50, -- spesi  2nd
-    70, -- sweat of newt 3rd
-    30, -- fortified runes 1st
-    50, -- gaseous materia 2nd
-    70, -- dew of miasma 3rd
-    30, -- caustic dreams 1st
-    50, -- dragon's blood 2nd
-    70, -- fenwick tree 3rd
-    70, -- liquid algoritms 3rd
-    10, -- acid primary
-    10, -- water primary
-    5, -- cauldron unassigned
-    10, -- fairy dust primary
-    10, -- wyrmwood oil primary
-}
+options={12,9,8,14}
 
 -- Buttons.
 buttons={}
-local c=0
-for i=1,15 do
-    if i~=13 then
-        b={x=1,y=11+c*12,w=61,h=8,c=i,hov=false}
-        if c>6 then -- Second column.
-            b.x=65
-            b.y=11+(c-7)*12
-        end
-        add(buttons, b)
-        c=c+1
-    end
+for i=1,#options do
+    b={x=1,y=11+(i-1)*12,w=125,h=8,c=options[i],hov=false}
+    
+    --if c>6 then -- Second column.
+    --    b.x=65
+    --    b.y=11+(i-7)*12
+    --end
+    add(buttons, b)
 end
 
 -- Back button.
@@ -72,7 +53,8 @@ function shop_draw()
 
         rect(b.x+1,b.y+1,b.x+7,b.y+7,13)
         rectfill(b.x+2,b.y+2,b.x+6,b.y+6,b.c)
-        oprint("$"..prices[b.c],r-12,b.y+2,10)
+        oprint(names[b.c+1],b.x+10,b.y+2,b.c)
+        oprint("$"..prices[b.c+1],r-12,b.y+2,10)
     end
 
     -- Draw back button.
