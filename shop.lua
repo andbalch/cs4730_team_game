@@ -83,6 +83,16 @@ function shop_draw()
         -- Draw tutorial string
         rectfill(0,119,128,128,2)
         print(tutorial_string[tutorial_step],2,121,7)
+
+        if tutorial_step == 13 then
+            rect(1,1,18,8,8)
+        elseif tutorial_step == 14 then
+            -- TODO: adjust to outline desired ingredient during tutorial
+            local b = buttons[1]
+            rect(b.x-1,b.y-1,b.x+b.w,b.y+b.h,8)
+        elseif tutorial_step == 15 then
+            rect(back_box.x-1,back_box.y-1,back_box.x+back_box.w,back_box.y+back_box.h,8)
+        end
     end
 end
 
