@@ -110,6 +110,7 @@ function _update60()
 	md=stat(34)==1
 	mp=mdp and not md
 	msp=md and not mdp
+	mdp = not mp
 
 	-- Update error timer.
 	error_timer=error_timer-1
