@@ -41,8 +41,9 @@ function brew_update()
 					s.v=nil
 				end
 			end
-		elseif holding~=nil and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
-			-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
+		elseif holding~=nil and coll(cust,mx,my) and mp then 
+			-- If a vial is pressing over a customer, serve it.
+			-- Triggerable when holding an empty vial
 			serve()
 		end
 	end
@@ -163,7 +164,9 @@ function brew_draw()
 
 	-- Draw the held vial near the mouse.
 	if holding~=nil then
-		draw_sim(vials[holding],mx+vox,my+voy)
+		x_bound = max(mx+vox, 0)
+		y_bound = max(my+voy, 0)
+		draw_sim(vials[holding],x_bound,y_bound)
 	end
 
 	-- Draw gold count.
