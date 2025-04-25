@@ -42,6 +42,11 @@ function brew_update()
 		elseif holding~=nil and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
 			-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
 			serve()
+			customers_served += 1
+			if customers_served >= 5 then
+				ending_gold = gold
+				mode = "endday"
+			end
 		end
 	end
 
@@ -153,6 +158,10 @@ function brew_draw()
 	-- Draw gold count.
 	spr(4,0,0)
 	oprint(gold,9,1,10)
+
+	-- Draw number of customers served
+	oprint(customers_served, 25, 1, 6)
+
 
 	-- Display current order
 	-- spr(192, 0, 16, 4, 4)

@@ -72,8 +72,11 @@ end
 function setup_game()
     -- Game variables.
     gold=42
+	starting_gold = gold
+	ending_gold = gold
     holding=nil
 	cust=gen_cust()
+	customers_served = 0
 
 	-- Vial variables.
 	vox=0 -- Vial offset from the mouse.
@@ -128,6 +131,8 @@ function _update60()
 		-- TODO introduction
 	elseif mode=="tutorial" then
 		-- TODO display optional tutorial screen
+	elseif mode=="endday" then
+		endday_update()
     end
 
 	-- Update mouse down previous.
@@ -150,6 +155,8 @@ function _draw()
 		-- TODO introduction
 	elseif mode=="tutorial" then
 		-- TODO display optional tutorial screen
+	elseif mode=="endday" then
+		endday_draw()
     end
 
 	-- Draw error.
