@@ -13,6 +13,8 @@ msp=false -- Mouse started pressing.
 error_str=nil
 error_timer=0
 
+-- Potion variables.
+
 -- TOOD: Variable profits, time limits?
 potions = {
 	-- Roughly ordered by difficulty
@@ -35,23 +37,30 @@ potions = {
 
 names={
 	"",
-	"holy tears",
-	"spesi cola",
-	"sweat of newt",
-	"fortified runes",
-	"gaseous materia",
-	"steam",
+	"miasma",
 	"caustic dreams",
-	"dragon's blood",
 	"fenwick tree",
-	"liquid algorithms",
-	"acid",
+	"fortified runes",
+	"crimstone",
+	"steam",
+	"moonlight",
+	"dragon's blood",
+	"sweat of newt",
+	"dreamroot spore",
+	"acid", 
 	"water",
 	"",
 	"fairy dust",
 	"wyrmwood oil",
+	"magic flame",
+	"chromacrystal",
 }
 
+multicol = {}
+multicol[16]={8,9,10}
+multicol[17]={2,14,12,11,3}
+
+-- Order variables.
 pot_lim = #potions
 time_lim = 60
 time_penalty = 0.10
@@ -164,7 +173,7 @@ function _draw()
 	spr(ms,mx,my)
 
 	-- Draw frame count.
-	oprint(stat(7),116,121,7)
+	--oprint(stat(7),116,121,7)
 end
 
 
