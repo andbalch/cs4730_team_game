@@ -5,7 +5,6 @@ for i=1,400 do
     bubbles[i]={x=rnd(128),y=rnd(128),r=4+rnd(16),c=1+flr(rnd(2)),s=0.2+rnd(0.8)}
 end
 
-
 function title_update()
     update_bubbles()
 
@@ -15,8 +14,9 @@ function title_update()
         setup_game()
         -- TODO: Transition to (skippable) intro first, then go into brew mode
         mode = "brew"
-    elseif false then
+    elseif btnp(🅾️) then
         -- TODO: Pressing "O" key goes to tutorial screen
+        mode = "tutorial"
     end
 end
 
@@ -28,6 +28,8 @@ function title_draw()
     print("❎", 56, 80, 11)
     print("place", 55, 65, 10)
     spr(192, 31, 30, 8, 4)
+
+    print("press 🅾️ for tutorial", 24, 88, 6)
 end
 
 function update_bubbles()

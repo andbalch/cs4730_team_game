@@ -181,7 +181,7 @@ function _draw()
 	elseif mode=="intro" then
 		-- TODO introduction
 	elseif mode=="tutorial" then
-		-- TODO display optional tutorial screen
+		tutorial_draw()
     end
 
 	-- Draw error.
