@@ -3,7 +3,7 @@ options={12,9,8,14}
 -- Buttons.
 buttons={}
 for i=1,#options do
-    b={x=1,y=11+(i-1)*12,w=125,h=8,c=options[i],hov=false}
+    b={x=1,y=11+(i-1)*12,w=126,h=9,c=options[i],hov=false}
     
     --if c>6 then -- Second column.
     --    b.x=65
@@ -42,7 +42,7 @@ function shop_draw()
 
     -- Draw buttons.
     for b in all(buttons) do
-        local r,d=b.x+b.w,b.y+b.h
+        local r,d=b.x+b.w-1,b.y+b.h-1
         rectfill(b.x,b.y,r,d,4)
         if b.hov then -- Hover outline.
             if md then
