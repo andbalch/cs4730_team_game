@@ -173,7 +173,7 @@ function brew_draw()
 	-- Display current order
 	-- spr(192, 0, 16, 4, 4)
 	sspr(64, 96, 32, 32, 0, 9, 44, 44)
-	oprint(names[potions[order_i].c], 3, 16, m2c(mx,my,potions[order_i].c))
+	oprint(names[potions[order_i].c+1], 3, 16, m2c(mx,my,potions[order_i].c))
 
 	-- Timer countdown until penalty occurs
 	local time_str = ""
