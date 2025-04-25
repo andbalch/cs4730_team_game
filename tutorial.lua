@@ -21,7 +21,7 @@ tutorial_string =
 		"you've made a potion! ❎",
 		"hover over the potion... ❎",
 		"click and hold to collect it",
-		"click to serve it to the customer!",
+		"click on customer to serve!",
 		"profit is based on purity... ❎",
 		"...and speed! ❎",
 		"one last thing... ❎",
