@@ -145,7 +145,14 @@ function update_sim(s)
 					local c=s:g(x,y)
 					if c~=0 and c~=13 and c~=6 and c~=17 then
 						-- Random movement for dreamwood spore.
-						if c==10 and s.r>5 and y~=0 then
+						if c==10 then
+							if s.r > 7 then
+								local dx=-1+flr(rnd(3))
+								local dy=-1+flr(rnd(3))
+								local m=s:perm(x,y,x,y+dy) and s:try(x,y,x+dx,y+dy)
+							end
+						-- Random jumping for miasma.
+						elseif c==1 and s.r>5 and y~=0 then
 							local dx=-1+flr(rnd(3))
 							local dy=-flr(rnd(2))
 							local m=s:perm(x,y,x,y+dy) and s:try(x,y,x+dx,y+dy)
