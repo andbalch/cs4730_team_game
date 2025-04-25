@@ -36,7 +36,11 @@ function recipes_update()
 
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
-         mode="brew"
+        if tutorial_flag then
+            mode = "tutorial"
+        else
+            mode = "brew"
+        end
     end
 
     pg_bk_hov=coll(pg_bk_box,mx,my) and current_page > 1

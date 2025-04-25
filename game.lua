@@ -99,6 +99,8 @@ function new_order()
 	return flr(rnd(pot_lim)) + 1
 end
 
+tutorial_flag = false
+
 -- Sets up variables for a game.
 function setup_game()
     -- Game variables.

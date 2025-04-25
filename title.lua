@@ -18,6 +18,7 @@ function title_update()
         -- Pressing "O" key goes to tutorial screen
         setup_tutorial()
         mode = "tutorial"
+        tutorial_flag = true
     end
 end
 

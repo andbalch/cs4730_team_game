@@ -28,7 +28,11 @@ function shop_update()
 
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
-         mode="brew"
+        if tutorial_flag then
+            mode = "tutorial"
+        else
+            mode = "brew"
+        end
     end
 end
 

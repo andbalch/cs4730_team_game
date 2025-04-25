@@ -70,6 +70,7 @@ function tutorial_update()
 	elseif btnp(❎) and tutorial_step == #tutorial_string then
 		mode = "title"
 		tutorial_step = 1
+		tutorial_flag = false
     end
 
 	brew_update()
