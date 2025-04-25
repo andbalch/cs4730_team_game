@@ -1,5 +1,17 @@
+tutorial_step = 1
+tutorial_string =
+    {
+        "test",
+        "test2",
+    }
+
+
 function tutorial_update()
-    
+    if (btnp(❎) or mp) and tutorial_step < #tutorial_string then -- ❎ key
+        tutorial_step = tutorial_step + 1
+    elseif btnp(🅾️) and tutorial_step > 1 then 
+        tutorial_step = tutorial_step - 1
+    end
 end
 
 function tutorial_draw()
@@ -81,9 +93,6 @@ function tutorial_draw()
 	-- Timer countdown until penalty occurs
 	oprint("0:00", 54, 1, time_c)
 
-	-- Draw currently viewed cell.
-	rectfill(0,119,128,128,2)
-	if viewing~=nil then
-		oprint(names[viewing+1],2,121,viewing)
-	end
+    -- Draw tutorial string
+    print(tutorial_string[tutorial_step],2,121,7)
 end

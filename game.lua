@@ -160,6 +160,7 @@ function _update60()
 		-- TODO introduction
 	elseif mode=="tutorial" then
 		-- TODO display optional tutorial screen
+		tutorial_update()
     end
 
 	-- Update mouse down previous.
