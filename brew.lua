@@ -13,6 +13,9 @@ transfer_mode=nil
 -- Timer for sound effects.
 sand_sound_timer=0
 
+-- Timer for selling potions
+sell_sound_timer=0
+
 function brew_update()
 	viewing=nil
 
@@ -64,7 +67,7 @@ function brew_update()
 		mode="recipes"
 	end
 
-	-- Emptying van.
+	-- Emptying vial.
 	can_hov=coll(can_box, mx, my)
 	if mp and can_hov and holding~=nil then
 		empty_vial(0)
@@ -243,6 +246,15 @@ function serve()
 	-- Empty vial and calc. score
 	-- TODO: inc. points based on potion difficulty?
 	local score = flr(empty_vial(potions[order_i].c) * 100)
+
+	if time() > sell_sound_timer then
+		if score < 10 then
+			sfx(2)
+		else
+			sfx(3)
+		end
+		sell_sound_timer = time() + 0.5
+	end
 
 	-- Penalty if time limit exceeded
 	if time_c == 8 then 
