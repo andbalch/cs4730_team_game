@@ -165,6 +165,7 @@ function brew_draw()
 	-- Draw the held vial near the mouse.
 	if holding~=nil then
 		x_bound = max(mx+vox, 0)
+		x_bound = min(x_bound, 120)
 		y_bound = max(my+voy, 0)
 		draw_sim(vials[holding],x_bound,y_bound)
 	end
