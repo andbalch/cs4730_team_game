@@ -67,7 +67,8 @@ end
 -- Procedures.
 
 function buy_vial(c)
-    local p=prices[c]
+    printh(c)
+    local p=prices[c+1]
     if gold>=p then
         for i=0,7 do
             v=vials[i]
