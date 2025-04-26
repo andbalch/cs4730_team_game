@@ -262,15 +262,15 @@ end
 function serve()
 	-- Empty vial and calc. score
 	-- TODO: inc. points based on potion difficulty?
-	gold = gold + flr(empty_vial(potions[order_i].c) * prices[potions[order_i].c])
+	local score = flr(empty_vial(potions[order_i].c) * prices[potions[order_i].c])
 
 	-- Penalty if time limit exceeded
-	--if time_c == 8 then 
-	--	score = score * (1 - time_penalty)
-	--end
+	if time_c == 8 then 
+		score = score * (1 - time_penalty)
+	end
 
 	-- Increase score.
-	--gold = flr(gold + score)
+	gold = flr(gold + score)
 
 	-- Transition to next order
 	order_i = new_order()
