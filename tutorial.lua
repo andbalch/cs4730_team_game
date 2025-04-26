@@ -24,7 +24,7 @@ tutorial_string =
 		"click on customer to serve!",
 		"profit is based on purity... ❎",
 		"...and speed! ❎",
-		"but watch out for reactions... ❎",
+		"but watch out for reactions ❎",
 		"one last thing... ❎",
 		"click on your recipies",
 		"the potion is here! ❎",
