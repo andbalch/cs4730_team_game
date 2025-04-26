@@ -36,7 +36,11 @@ function recipes_update()
 
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
-         mode="brew"
+        if tutorial_flag then
+            mode = "tutorial"
+        else
+            mode = "brew"
+        end
     end
 
     pg_bk_hov=coll(pg_bk_box,mx,my) and current_page > 1
@@ -47,6 +51,18 @@ function recipes_update()
     pg_fwd_hov=coll(pg_fwd_box,mx,my) and current_page < max_page
     if pg_fwd_hov and mp then
         current_page=current_page+1
+    end
+
+    if tutorial_flag then
+        if (btnp(❎) or mp) and tutorial_step < #tutorial_string then
+            tutorial_step = tutorial_step + 1
+        elseif btnp(🅾️) and tutorial_step > 1 then
+            tutorial_step = tutorial_step - 1
+        elseif btnp(❎) and tutorial_step == #tutorial_string then
+            mode = "title"
+            tutorial_step = 1
+            tutorial_flag = false
+        end
     end
 end
 
@@ -124,6 +140,12 @@ function recipes_draw()
         if pg_bk_hov then 
             draw_box_outline(pg_bk_box)
         end
+    end
+
+    if tutorial_flag then
+        -- Draw tutorial string
+        rectfill(0,119,128,128,2)
+        print(tutorial_string[tutorial_step],2,121,7)
     end
 end
 

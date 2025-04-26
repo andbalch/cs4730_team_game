@@ -98,6 +98,8 @@ function new_order()
 	return flr(rnd(pot_lim)) + 1
 end
 
+tutorial_flag = false
+
 -- Sets up variables for a game.
 function setup_game()
     -- Game variables.
@@ -159,6 +161,7 @@ function _update60()
 		-- TODO introduction
 	elseif mode=="tutorial" then
 		-- TODO display optional tutorial screen
+		tutorial_update()
     end
 
 	-- Update mouse down previous.
@@ -180,7 +183,7 @@ function _draw()
 	elseif mode=="intro" then
 		-- TODO introduction
 	elseif mode=="tutorial" then
-		-- TODO display optional tutorial screen
+		tutorial_draw()
     end
 
 	-- Draw error.

@@ -28,7 +28,23 @@ function shop_update()
 
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
-         mode="brew"
+        if tutorial_flag then
+            mode = "tutorial"
+        else
+            mode = "brew"
+        end
+    end
+
+    if tutorial_flag then
+        if (btnp(❎) or mp) and tutorial_step < #tutorial_string then
+            tutorial_step = tutorial_step + 1
+        elseif btnp(🅾️) and tutorial_step > 1 then
+            tutorial_step = tutorial_step - 1
+        elseif btnp(❎) and tutorial_step == #tutorial_string then
+            mode = "title"
+            tutorial_step = 1
+            tutorial_flag = false
+        end
     end
 end
 
@@ -61,6 +77,22 @@ function shop_draw()
     spr(3,back_box.x,back_box.y)
     if back_hov then 
         draw_box_outline(back_box)
+    end
+
+    if tutorial_flag then
+        -- Draw tutorial string
+        rectfill(0,119,128,128,2)
+        print(tutorial_string[tutorial_step],2,121,7)
+
+        if tutorial_step == 13 then
+            rect(1,1,18,8,8)
+        elseif tutorial_step == 14 then
+            -- TODO: adjust to outline desired ingredient during tutorial
+            local b = buttons[1]
+            rect(b.x-1,b.y-1,b.x+b.w,b.y+b.h,8)
+        elseif tutorial_step == 15 then
+            rect(back_box.x-1,back_box.y-1,back_box.x+back_box.w,back_box.y+back_box.h,8)
+        end
     end
 end
 
