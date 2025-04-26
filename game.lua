@@ -159,8 +159,9 @@ function _update60()
 		recipes_update()
 	elseif mode=="intro" then
 		-- TODO introduction
+		intro_update()
 	elseif mode=="tutorial" then
-		-- TODO display optional tutorial screen
+		-- display optional tutorial screen
 		tutorial_update()
     end
 
@@ -182,6 +183,7 @@ function _draw()
 		recipes_draw()
 	elseif mode=="intro" then
 		-- TODO introduction
+		intro_draw()
 	elseif mode=="tutorial" then
 		tutorial_draw()
     end
