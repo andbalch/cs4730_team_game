@@ -17,22 +17,21 @@ error_timer=0
 
 -- TOOD: Variable profits, time limits?
 potions = {
-	-- Roughly ordered by difficulty
-	-- 1st order potion: Req. only primary ingredients (water, fairy dust, wyrmwood oil)
-	{c=7, n="caustic\ndreams"},		-- <- water (12) + wyrmwood oil (15)
-	{c=4, n="fortified\nrunes"},	-- <- fairy dust (14) + wyrmwood oil (15)
-
-	-- 2nd order potion: Req. primary ingredients and/or 1st order potions
-	{c=5, n="gaseous\nmateria"},	-- <- water (12) + fortified runes (4)
-	{c=8, n="dragon's\nblood"},		-- <- fairy dust (14) + caustic dreams (7)
-	{c=2, n="spesi\ncola"},			-- <- fortified runes (4) + caustic dreams (7) 
-
-	-- 3rd order potion: Req. primary ingredients and/or 2nd order potions
-	{c=3, n="sweat of\nnewt"},		-- <- wyrmwood oil (15) + gaseous materia (5) 
-	{c=6, n="steam"},		-- <- caustic dreams (7) + gaseous materia (5)
-	{c=9, n="fenwick\ntree"},		-- <- fortified runes (4) + spesi cola (2)
-	{c=1, n="holy\ntears"},			-- <- fortified runes (4) + sweat of newt (3)
-	{c=10, n="liquid\nalgorithms"},	-- <- fenwick tree (9) + holy tears (1)
+	{c=12, n="water", p=5},
+	{c=9, n="sweat of\nnewt", p=20},
+	{c=8, n="dragon's\nblood", p=30},
+	{c=14, n="fairy\ndust", p=30},
+	{c=3, n="fenwick\ntree", p=60},
+	{c=5, n="crimstone", p=70},
+	{c=2, n="caustic\ndreams", p=80},
+	{c=16, n="magic\nflame", p=100},
+	{c=4, n="fortified\nrunes", p=120},
+	{c=11, n="acid", p=130},
+	{c=7, n="moonlight", p=200},
+	{c=17, n="chroma-\ncrystal", p=210},
+	{c=10, n="dreamroot\nspore", p=220},
+	{c=1, n="miasma", p=300},
+	{c=15, n="wyrmood\noil", p=300},
 }
 
 names={
@@ -47,7 +46,7 @@ names={
 	"dragon's blood",
 	"sweat of newt",
 	"dreamroot spore",
-	"acid", 
+	"acid",
 	"water",
 	"",
 	"fairy dust",
