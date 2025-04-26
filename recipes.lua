@@ -133,23 +133,15 @@ function draw_entry(entry, index)
     local y=index*14
     -- Write ingredient 1.
     rect(30, 15+y, 36, 21+y, 13)
-    local c1=entry.c1
-    if c1==16 then
-        c1=8+(t()*3%3)
-    end
-    rectfill(31, 16+y, 35, 20+y, c1)
+    rectfill(31, 16+y, 35, 20+y, m2c(0,0,entry.c1))
     
     -- Write ingredient 2.
     rect(50, 15+y, 56, 21+y, 13)
-    local c2=entry.c2
-    if c2==16 then
-        c2=8+(t()*3%3)
-    end
-    rectfill(51, 16+y, 55, 20+y, c2)
+    rectfill(51, 16+y, 55, 20+y, m2c(0,0,entry.c2))
 
     -- Write result.
     rect(80, 15+y, 86, 21+y, 13)
-    rectfill(81, 16+y, 85, 20+y, entry.c3)
+    rectfill(81, 16+y, 85, 20+y, m2c(0,0,entry.c3))
     
     -- Plus sign.
     rectfill(43, 16+y, 43, 20+y, 13)
@@ -160,8 +152,6 @@ function draw_entry(entry, index)
     rectfill(66, 19+y, 70, 19+y, 13)
 
 end
-
-
 
 -- Adds a new discovery to the recipe book.
 function discover(c1,c2,c3)

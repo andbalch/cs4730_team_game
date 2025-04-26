@@ -138,8 +138,8 @@ function brew_draw()
 	draw_sim(caul2, caul2_box.x, caul2_box.y)
 
 	-- Draw fire under cauldron.
-	if not caul1.flipped then draw_fire(caul1_box) end
-	if not caul2.flipped then draw_fire(caul2_box) end
+	--if not caul1.flipped then draw_fire(caul1_box) end
+	--if not caul2.flipped then draw_fire(caul2_box) end
 	
 	-- Draw cauldron flip buttons.
 	spr(6,caul1_flip_box.x,caul1_flip_box.y)

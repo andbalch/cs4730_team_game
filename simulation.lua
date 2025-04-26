@@ -66,22 +66,12 @@ function create_sim(x,y,w,h)
 
 			if c2~=13 and c1~=c2 then
 				if c1~=0 and c2~=0 and c1~=6 and c2~=6 then
-					-- Acid destroys.
-					if (c1==11 or c2==11) then
-						s:s(x1,y1,6)
-						local tc=11
-						if s.r>7 then tc=6 end
-						s:s(x2,y2,tc)
-						discover(c1,c2,6)
-						return true
 					-- Check if c1 and c2 make a recipe or reaction
-					else
-						prod=check_recipe(c1, c2)
-						if prod~=nil then 
-							s:s(x1,y1,prod)
-							s:s(x2,y2,prod)
-							return true
-						end
+					prod=check_recipe(c1, c2, s.r)
+					if prod~=nil then 
+						s:s(x1,y1,prod)
+						s:s(x2,y2,prod)
+						return true
 					end
 				end
 				if density[c1+1]>density[c2+1] then -- Check for permeability, and swap if it works.
@@ -272,7 +262,7 @@ function draw_sim(s,dx,dy)
 end
 
 -- Compares cell colors and see if their mixing causes a reaction.
-function check_recipe(c1, c2)
+function check_recipe(c1, c2, r)
 	-- crimstone = water + dragon's blood
 	if cmp(c1,c2,12,8) then
 		discover(c1,c2,5)
@@ -321,6 +311,10 @@ function check_recipe(c1, c2)
 	elseif cmp(c1, c2, 12, 14) then
 		discover(c1,c2,16)
 		return 16
+	-- acid destroys everything except itself, glass, dragon's blood, sweat of newt, moonlight, and steam
+	elseif c1~=c2 and (c1==11 or c2 ==11) and not acid_proof(c1) and not acid_proof(c2) and r>7 then		
+		discover(c1,c2,6)
+		return 6
 
 	-- Explosion: dragon's blood (8) + spesi cola (2) 
 	--elseif cmp(c1, c2, 8, 2) then
@@ -341,6 +335,11 @@ function check_recipe(c1, c2)
 	end
 end
 
+-- Returns if a material is acid-proof.
+function acid_proof(c) 
+	return c==11 or c==9 or c==8 or c==6 or c==7 
+end
+
 -- Helper code to check if some combination of c1 and c2 are equal to v1 and v2
 function cmp(c1, c2, v1, v2)
 	return (c1==v1 and c2==v2) or (c1==v2 and c2==v1)
@@ -349,6 +348,6 @@ end
 function m2c(x,y,c)
 	if c<16 then return c else
 		local cs=multicol[c]
-		return cs[1+((flr(time()*100)+x+y)%#cs)]
+		return cs[1+((flr(time()*200)+x+y)%#cs)]
 	end
 end
