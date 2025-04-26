@@ -1,6 +1,8 @@
 -- Constants.
 caul1_box={x=8,y=80,w=32,h=32}
 caul2_box={x=48,y=80,w=32,h=32}
+caul1_flip_box={x=39,y=108,w=8,h=8}
+caul2_flip_box={x=79,y=108,w=8,h=8}
 shop_box={x=119,y=1,w=7,h=8}
 recipes_box={x=108,y=1,w=9,h=8}
 can_box={x=99,y=1,w=8,h=8}
@@ -42,8 +44,9 @@ function brew_update()
 					s.v=nil
 				end
 			end
-		elseif holding~=nil and coll(cust,mx,my) and mp then -- If a vial is pressing over a customer, serve it.
-			-- POTENTIAL BUG: Triggerable when holding an empty vial, observed a few instances when serve() is called more than once on click
+		elseif holding~=nil and coll(cust,mx,my) and mp then 
+			-- If a vial is pressing over a customer, serve it.
+			-- Triggerable when holding an empty vial
 			serve()
 		end
 	end
@@ -53,6 +56,16 @@ function brew_update()
 	transfer(caul2,caul2_box)
 	if not md then 
 		transfer_mode=nil
+	end
+
+	-- Clicking the cauldron flip buttons.
+	c1fhov=coll(caul1_flip_box,mx,my)
+	if c1fhov and mp then
+		caul1:flip()
+	end
+	c2fhov=coll(caul2_flip_box,mx,my)
+	if c2fhov and mp then
+		caul2:flip()
 	end
 
 	-- Clicking shop button.
@@ -108,7 +121,6 @@ function brew_draw()
 	sspr(64, 64, 32, 32, cust.x, cust.y, cust.w, cust.h)
 
 	-- Draw shop button.
-
 	spr(49,shop_box.x,shop_box.y)
 	if shop_hov then draw_box_outline(shop_box) end
 
@@ -129,9 +141,15 @@ function brew_draw()
 	draw_sim(caul2, caul2_box.x, caul2_box.y)
 
 	-- Draw fire under cauldron.
-	draw_fire(caul1_box)
-	draw_fire(caul2_box)
+	--if not caul1.flipped then draw_fire(caul1_box) end
+	--if not caul2.flipped then draw_fire(caul2_box) end
 	
+	-- Draw cauldron flip buttons.
+	spr(6,caul1_flip_box.x,caul1_flip_box.y)
+	spr(6,caul2_flip_box.x,caul2_flip_box.y)
+	if c1fhov then draw_box_outline(caul1_flip_box) end
+	if c2fhov then draw_box_outline(caul2_flip_box) end
+
 	-- Draw vials in slots.
 	for i=0,7 do
 		local s=slots[i]
@@ -149,22 +167,24 @@ function brew_draw()
 
 	-- Draw the held vial near the mouse.
 	if holding~=nil then
-		draw_sim(vials[holding],mx+vox,my+voy)
+		x_bound = max(mx+vox, 0)
+		x_bound = min(x_bound, 120)
+		y_bound = max(my+voy, 0)
+		draw_sim(vials[holding],x_bound,y_bound)
 	end
 
-
 	-- Draw gold count.
-	spr(4,0,0)
-	oprint(gold,9,1,10)
+	spr(4,1,1)
+	oprint(gold,10,2,10)
 
 	-- Display current order
 	-- spr(192, 0, 16, 4, 4)
 	sspr(64, 96, 32, 32, 0, 9, 44, 44)
-	oprint(potions[order_i].n, 3, 16, potions[order_i].c)
+	oprint(potions[order_i].n, 3, 16, m2c(mx,my,potions[order_i].c))
 
 	-- Timer countdown until penalty occurs
 	local time_str = ""
-	local d_t = flr((t() - pot_timer) * 1.5 * time_mod) -- '*1.5' roughly controls for how pico8 handles time, given update runs 30 times per sec
+	local d_t = flr((t() - pot_timer) * 0.75 * time_mod) -- '*1.5' roughly controls for how pico8 handles time, given update runs 30 times per sec
 	if (d_t < time_lim) then
 		d_t = time_lim - d_t
 		time_c = 6
@@ -186,8 +206,10 @@ function brew_draw()
 	-- Draw currently viewed cell.
 	rectfill(0,119,128,128,2)
 	if viewing~=nil then
-		oprint(names[viewing+1],2,121,viewing)
+		oprint(names[viewing+1],2,121,m2c(mx,my,viewing))
 	end
+	-- print(stat(7),2,121,7)
+
 
 	-- Draw transfer mode.
 	if transfer_mode=="pour" then
@@ -245,7 +267,7 @@ end
 function serve()
 	-- Empty vial and calc. score
 	-- TODO: inc. points based on potion difficulty?
-	local score = flr(empty_vial(potions[order_i].c) * 100)
+	local score = flr(empty_vial(potions[order_i].c) * prices[potions[order_i].c])
 
 	if time() > sell_sound_timer then
 		if score < 10 then

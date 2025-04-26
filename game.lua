@@ -13,45 +13,75 @@ msp=false -- Mouse started pressing.
 error_str=nil
 error_timer=0
 
+-- Potion variables.
+
 -- TOOD: Variable profits, time limits?
 potions = {
-	-- Roughly ordered by difficulty
-	-- 1st order potion: Req. only primary ingredients (water, fairy dust, wyrmwood oil)
-	{c=7, n="caustic\ndreams"},		-- <- water (12) + wyrmwood oil (15)
-	{c=4, n="fortified\nrunes"},	-- <- fairy dust (14) + wyrmwood oil (15)
-
-	-- 2nd order potion: Req. primary ingredients and/or 1st order potions
-	{c=5, n="gaseous\nmateria"},	-- <- water (12) + fortified runes (4)
-	{c=8, n="dragon's\nblood"},		-- <- fairy dust (14) + caustic dreams (7)
-	{c=2, n="spesi\ncola"},			-- <- fortified runes (4) + caustic dreams (7) 
-
-	-- 3rd order potion: Req. primary ingredients and/or 2nd order potions
-	{c=3, n="sweat of\nnewt"},		-- <- wyrmwood oil (15) + gaseous materia (5) 
-	{c=6, n="steam"},		-- <- caustic dreams (7) + gaseous materia (5)
-	{c=9, n="fenwick\ntree"},		-- <- fortified runes (4) + spesi cola (2)
-	{c=1, n="holy\ntears"},			-- <- fortified runes (4) + sweat of newt (3)
-	{c=10, n="liquid\nalgorithms"},	-- <- fenwick tree (9) + holy tears (1)
+	{c=12, n="water", p=5},
+	{c=9, n="sweat of\nnewt", p=20},
+	{c=8, n="dragon's\nblood", p=30},
+	{c=14, n="fairy\ndust", p=30},
+	{c=3, n="fenwick\ntree", p=60},
+	{c=5, n="crimstone", p=70},
+	{c=2, n="caustic\ndreams", p=80},
+	{c=16, n="magic\nflame", p=100},
+	{c=4, n="fortified\nrunes", p=120},
+	{c=11, n="acid", p=130},
+	{c=7, n="moonlight", p=200},
+	{c=17, n="chroma-\ncrystal", p=210},
+	{c=10, n="dreamroot\nspore", p=220},
+	{c=1, n="miasma", p=300},
+	{c=15, n="wyrmood\noil", p=300},
 }
 
 names={
 	"",
-	"holy tears",
-	"spesi cola",
-	"sweat of newt",
-	"fortified runes",
-	"gaseous materia",
-	"steam",
+	"miasma",
 	"caustic dreams",
-	"dragon's blood",
 	"fenwick tree",
-	"liquid algorithms",
+	"fortified runes",
+	"crimstone",
+	"steam",
+	"moonlight",
+	"dragon's blood",
+	"sweat of newt",
+	"dreamroot spore",
 	"acid",
 	"water",
 	"",
 	"fairy dust",
 	"wyrmwood oil",
+	"magic flame",
+	"chromacrystal",
 }
 
+prices={
+	0,
+	300,
+	80,
+	60,
+	120,
+	70,
+	0,
+	200,
+	30,
+	20,
+	220,
+	130,
+	5,
+	0,
+	30,
+	300,
+	100,
+	210
+}
+
+
+multicol = {}
+multicol[16]={8,9,10}
+multicol[17]={2,14,12,11,3}
+
+-- Order variables.
 pot_lim = #potions
 time_lim = 60
 time_penalty = 0.10
@@ -67,6 +97,8 @@ order_i = -1
 function new_order()
 	return flr(rnd(pot_lim)) + 1
 end
+
+tutorial_flag = false
 
 -- Sets up variables for a game.
 function setup_game()
@@ -110,6 +142,7 @@ function _update60()
 	md=stat(34)==1
 	mp=mdp and not md
 	msp=md and not mdp
+	mdp = not mp
 
 	-- Update error timer.
 	error_timer=error_timer-1
@@ -126,8 +159,10 @@ function _update60()
 		recipes_update()
 	elseif mode=="intro" then
 		-- TODO introduction
+		intro_update()
 	elseif mode=="tutorial" then
-		-- TODO display optional tutorial screen
+		-- display optional tutorial screen
+		tutorial_update()
     end
 
 	-- Update mouse down previous.
@@ -148,8 +183,9 @@ function _draw()
 		recipes_draw()
 	elseif mode=="intro" then
 		-- TODO introduction
+		intro_draw()
 	elseif mode=="tutorial" then
-		-- TODO display optional tutorial screen
+		tutorial_draw()
     end
 
 	-- Draw error.
@@ -163,7 +199,7 @@ function _draw()
 	spr(ms,mx,my)
 
 	-- Draw frame count.
-	oprint(stat(7),116,121,7)
+	--oprint(stat(7),116,121,7)
 end
 
 

@@ -36,7 +36,11 @@ function recipes_update()
 
     back_hov=coll(back_box,mx,my)
     if back_hov and mp then
-         mode="brew"
+        if tutorial_flag then
+            mode = "tutorial"
+        else
+            mode = "brew"
+        end
     end
 
     pg_bk_hov=coll(pg_bk_box,mx,my) and current_page > 1
@@ -47,6 +51,18 @@ function recipes_update()
     pg_fwd_hov=coll(pg_fwd_box,mx,my) and current_page < max_page
     if pg_fwd_hov and mp then
         current_page=current_page+1
+    end
+
+    if tutorial_flag then
+        if (btnp(❎) or mp) and tutorial_step < #tutorial_string then
+            tutorial_step = tutorial_step + 1
+        elseif btnp(🅾️) and tutorial_step > 1 then
+            tutorial_step = tutorial_step - 1
+        elseif btnp(❎) and tutorial_step == #tutorial_string then
+            mode = "title"
+            tutorial_step = 1
+            tutorial_flag = false
+        end
     end
 end
 
@@ -94,7 +110,6 @@ function recipes_draw()
     end
 
     -- Write recipe entries on page.
-    print(#entries)
     local ps=1+(current_page-1)*8
     for i=ps,min(ps+7,#entries) do
         draw_entry(entries[i],i-ps)
@@ -126,6 +141,12 @@ function recipes_draw()
             draw_box_outline(pg_bk_box)
         end
     end
+
+    if tutorial_flag then
+        -- Draw tutorial string
+        rectfill(0,119,128,128,2)
+        print(tutorial_string[tutorial_step],2,121,7)
+    end
 end
 
 
@@ -134,23 +155,15 @@ function draw_entry(entry, index)
     local y=index*14
     -- Write ingredient 1.
     rect(30, 15+y, 36, 21+y, 13)
-    local c1=entry.c1
-    if c1==16 then
-        c1=8+flr(rnd(3))
-    end
-    rectfill(31, 16+y, 35, 20+y, c1)
+    rectfill(31, 16+y, 35, 20+y, m2c(0,0,entry.c1))
     
     -- Write ingredient 2.
     rect(50, 15+y, 56, 21+y, 13)
-    local c2=entry.c2
-    if c2==16 then
-        c2=8+flr(rnd(3))
-    end
-    rectfill(51, 16+y, 55, 20+y, c2)
+    rectfill(51, 16+y, 55, 20+y, m2c(0,0,entry.c2))
 
     -- Write result.
     rect(80, 15+y, 86, 21+y, 13)
-    rectfill(81, 16+y, 85, 20+y, entry.c3)
+    rectfill(81, 16+y, 85, 20+y, m2c(0,0,entry.c3))
     
     -- Plus sign.
     rectfill(43, 16+y, 43, 20+y, 13)
@@ -161,8 +174,6 @@ function draw_entry(entry, index)
     rectfill(66, 19+y, 70, 19+y, 13)
 
 end
-
-
 
 -- Adds a new discovery to the recipe book.
 function discover(c1,c2,c3)
