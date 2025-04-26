@@ -24,6 +24,7 @@ tutorial_string =
 		"click on customer to serve!",
 		"profit is based on purity... ❎",
 		"...and speed! ❎",
+		"but watch out for reactions... ❎",
 		"one last thing... ❎",
 		"click on your recipies",
 		"the potion is here! ❎",
@@ -105,7 +106,7 @@ function tutorial_draw()
 		rect(12,12,75,75,8)
 	elseif tutorial_step == 23 then
 		rect(52,0,70,6,8)
-	elseif tutorial_step == 25 then
+	elseif tutorial_step == 26 then
 		rect(recipes_box.x-1,recipes_box.y-1,recipes_box.x + recipes_box.w,recipes_box.y + recipes_box.h,8)
 	end
 end
