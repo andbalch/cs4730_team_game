@@ -1,4 +1,4 @@
-tutorial_step = 12
+tutorial_step = 1
 tutorial_string =
     {
         "welcome to the game! ❎",
