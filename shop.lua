@@ -126,11 +126,14 @@ function buy_vial(c)
                 end 
                 
                 gold=gold-p
+                sfx(7)
                 return
             end
         end
+        sfx(1)
         err("no space!")
     else
+        sfx(1)
         err("too poor!")
     end
 end

@@ -72,6 +72,7 @@ function brew_update()
 	shop_hov=coll(shop_box, mx, my)
 	if mp and shop_hov then
 		mode="shop"
+		sfx(5)
 	end
 
 	-- Clicking recipes button.

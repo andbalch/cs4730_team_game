@@ -48,6 +48,13 @@ function create_sim(x,y,w,h)
 				s.inactivity=0
 				s.rc[y]=true
 				s.ra[y]=0
+				-- if react_timer < time() then
+				-- 	react_timer = time() + 0.01
+				-- 	-- Play sound effect if reaction occurs.
+				-- 	if c~=0 and c~=13 and c~=6 then
+				-- 		sfx(6)
+				-- 	end
+				-- end
 			end
 		end,
 		-- Swaps (x1,y2) with (x2,y2).

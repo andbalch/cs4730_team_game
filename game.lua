@@ -13,6 +13,9 @@ msp=false -- Mouse started pressing.
 error_str=nil
 error_timer=0
 
+-- Reaction Timer
+react_timer=0
+
 -- Potion variables.
 
 -- TOOD: Variable profits, time limits?
