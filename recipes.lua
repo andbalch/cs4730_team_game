@@ -42,14 +42,19 @@ function recipes_update()
             mode = "brew"
         end
     end
-
+    
+    -- Handle page navigation.
+    -- previous page button
     pg_bk_hov=coll(pg_bk_box,mx,my) and current_page > 1
     if pg_bk_hov and mp then
+        sfx(4)
         current_page=current_page-1
     end
 
+    -- next page button
     pg_fwd_hov=coll(pg_fwd_box,mx,my) and current_page < max_page
     if pg_fwd_hov and mp then
+        sfx(4)
         current_page=current_page+1
     end
 

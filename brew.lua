@@ -78,6 +78,7 @@ function brew_update()
 	recipes_hov=coll(recipes_box, mx, my)
 	if mp and recipes_hov then
 		mode="recipes"
+		sfx(4)
 	end
 
 	-- Emptying vial.
