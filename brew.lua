@@ -16,7 +16,7 @@ transfer_mode=nil
 sand_sound_timer=0
 
 -- Timer for selling potions
-sell_sound_timer=0
+sell_timer=0
 
 function brew_update()
 	viewing=nil
@@ -267,18 +267,29 @@ function transfer(caul, box)
 end
 
 function serve()
+	if sell_timer > time() then
+		return -- Don't serve if not enough time has passed.
+	end
+	sell_timer = time() + 0.2
 	-- Empty vial and calc. score
 	-- TODO: inc. points based on potion difficulty?
 	local score = flr(empty_vial(potions[order_i].c) * prices[potions[order_i].c])
 
-	if time() > sell_sound_timer then
-		if score < 10 then
-			sfx(2)
-		else
-			sfx(3)
+	if score < 10 then
+		sfx(2)
+		failure_count = failure_count + 1
+		if failure_count >= 5 then
+			mode = "failure"
+			music(4)
 		end
-		sell_sound_timer = time() + 0.5
+	else
+		sfx(3)
+		failure_count = failure_count - 1
+		if failure_count < 0 then
+			failure_count = 0
+		end
 	end
+	sell_sound_timer = time() + 0.5
 
 	-- Penalty if time limit exceeded
 	if time_c == 8 then 
@@ -287,6 +298,9 @@ function serve()
 
 	-- Increase score.
 	gold = flr(gold + score)
+	if gold > 2000 then
+		mode = "success"
+	end
 
 	-- Transition to next order
 	order_i = new_order()

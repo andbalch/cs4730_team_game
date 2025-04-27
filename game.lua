@@ -1,4 +1,4 @@
-mode="title"
+mode="title" -- Current game mode.
 
 -- Mouse variables.
 poke(0x5F2D, 1) -- Activate mouse.
@@ -15,6 +15,9 @@ error_timer=0
 
 -- Reaction Timer
 react_timer=0
+
+-- If goes beyond 5, game fail
+failure_count=0
 
 -- Potion variables.
 
@@ -166,6 +169,12 @@ function _update60()
 	elseif mode=="tutorial" then
 		-- display optional tutorial screen
 		tutorial_update()
+	elseif mode=="success" then
+		-- display success screen
+		success_update()
+	elseif mode=="failure" then	
+		-- display fail screen
+		failure_update()
     end
 
 	-- Update mouse down previous.
@@ -189,6 +198,10 @@ function _draw()
 		intro_draw()
 	elseif mode=="tutorial" then
 		tutorial_draw()
+	elseif mode=="success" then
+		success_draw()
+	elseif mode=="failure" then
+		failure_draw()
     end
 
 	-- Draw error.
