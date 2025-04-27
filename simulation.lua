@@ -99,6 +99,7 @@ function create_sim(x,y,w,h)
 			return cnt
 		end,
 		flip=function(s)
+			sfx(16)
 			s.flipped=not s.flipped
 			
 			for x=0,flr((s.w-1)/2) do

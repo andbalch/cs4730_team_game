@@ -32,6 +32,7 @@ function shop_update()
             mode = "tutorial"
         else
             mode = "brew"
+            sfx(16)
         end
     end
 
