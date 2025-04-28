@@ -107,7 +107,7 @@ function setup_game()
     holding=nil
 	cust=gen_cust()
 	failure_count=0
-	time_lim = 60
+	time_lim = 120
 
 	-- Vial variables.
 	vox=0 -- Vial offset from the mouse.
