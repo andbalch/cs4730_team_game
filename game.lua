@@ -23,14 +23,9 @@ failure_count=0
 
 -- TOOD: Variable profits, time limits?
 potions = {
-	{c=12, n="water", p=5},
-	{c=9, n="sweat of\nnewt", p=20},
-	{c=8, n="dragon's\nblood", p=30},
-	{c=14, n="fairy\ndust", p=30},
 	{c=3, n="fenwick\ntree", p=60},
 	{c=5, n="crimstone", p=70},
 	{c=2, n="caustic\ndreams", p=80},
-	{c=16, n="magic\nflame", p=100},
 	{c=4, n="fortified\nrunes", p=120},
 	{c=11, n="acid", p=130},
 	{c=7, n="moonlight", p=200},
@@ -112,6 +107,7 @@ function setup_game()
     gold=42
     holding=nil
 	cust=gen_cust()
+	failure_count=0
 
 	-- Vial variables.
 	vox=0 -- Vial offset from the mouse.

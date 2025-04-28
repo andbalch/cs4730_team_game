@@ -3,7 +3,7 @@ tutorial_string =
     {
         "welcome to the game! ❎",
 		"press ❎ or click to continue",
-		"if you loose your place...",
+		"if you lose your place...",
 		"press 🅾️ to go back a step!",
 		"let's begin! ❎",
 		"this is your order ❎",
@@ -32,39 +32,9 @@ tutorial_string =
 		"that's all! exit with ❎",
     }
 
-function setup_tutorial()
-	-- Game variables.
-	gold=42
-	holding=nil
-	cust=gen_cust()
-
-	-- Vial variables.
-	vox=0 -- Vial offset from the mouse.
-	voy=0
-
-	-- Recipe book.
-	recipe_book={}
-
-	-- Create simulations.
-	caul1=create_sim(0, 32,32,32)
-	caul2=create_sim(32,32,32,32)
-
-	-- Vials and vial slots.
-	vials={}
-	slots={}
-	for i=0,7 do
-		v=create_sim(64+i*8,32,8,16)
-		vials[i]=v
-		slots[i]={v=i,x=96+(i%2)*12,y=24+flr(i/2)*24,w=v.w,h=v.h}
-	end
-
-	-- generate order
-	order_i = 6
-	pot_timer = t()
-end
 
 function tutorial_update()
-    if (btnp(❎) or mp) and tutorial_step < #tutorial_string then
+    if btnp(❎) or mp and tutorial_step < #tutorial_string then
         tutorial_step = tutorial_step + 1
     elseif btnp(🅾️) and tutorial_step > 1 then
         tutorial_step = tutorial_step - 1

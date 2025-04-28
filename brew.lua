@@ -179,10 +179,17 @@ function brew_draw()
 	spr(4,1,1)
 	oprint(gold,10,2,10)
 
+	-- Draw rep.
+	oprint("rep",24,2,11)
+	spr(59+failure_count,37,1)
+
 	-- Display current order
 	-- spr(192, 0, 16, 4, 4)
 	sspr(64, 96, 32, 32, 0, 9, 44, 44)
-	oprint(potions[order_i].n, 3, 16, m2c(mx,my,potions[order_i].c))
+	local oy=17
+	local os=potions[order_i].n
+	if #os<=9 then oy=21 end
+	oprint(os, 4, oy, m2c(mx,my,potions[order_i].c))
 
 	-- Timer countdown until penalty occurs
 	local time_str = ""
@@ -356,7 +363,7 @@ function draw_fire(box)
 end
 
 -- Generates a customer.
-robe_cols={1,2,3,4,5,6,8,12,14}
+robe_cols={1,2,3,4,5,8,12,14}
 function gen_cust()
 	local nose=true
 	if(rnd(1)>0.5) then nose=false end
