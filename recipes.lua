@@ -60,15 +60,7 @@ function recipes_update()
     end
 
     if tutorial_flag then
-        if (btnp(❎) or mp) and tutorial_step < #tutorial_string then
-            tutorial_step = tutorial_step + 1
-        elseif btnp(🅾️) and tutorial_step > 1 then
-            tutorial_step = tutorial_step - 1
-        elseif btnp(❎) and tutorial_step == #tutorial_string then
-            mode = "title"
-            tutorial_step = 1
-            tutorial_flag = false
-        end
+        tutorial_progress()
     end
 end
 

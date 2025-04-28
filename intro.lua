@@ -1,4 +1,4 @@
-y_scroll = 8
+y_scroll = 128
 start = 0
 
 function setup_intro()

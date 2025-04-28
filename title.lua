@@ -17,6 +17,7 @@ function title_update()
     elseif btnp(🅾️) then
         -- Pressing "O" key goes to tutorial screen
         setup_game()
+        order_i = 2
         mode = "tutorial"
         tutorial_flag = true
     end

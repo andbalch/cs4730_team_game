@@ -47,7 +47,7 @@ names={
 	"dragon's blood",
 	"sweat of newt",
 	"dreamroot spore",
-	"acid",
+	"oil of vitriol",
 	"water",
 	"",
 	"fairy dust",
@@ -160,7 +160,7 @@ function _update60()
 	elseif mode=="recipes" then
 		recipes_update()
 	elseif mode=="intro" then
-		-- TODO introduction
+		-- introduction
 		intro_update()
 	elseif mode=="tutorial" then
 		-- display optional tutorial screen
