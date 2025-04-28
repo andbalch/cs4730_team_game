@@ -27,7 +27,7 @@ potions = {
 	{c=5, n="crimstone", p=70},
 	{c=2, n="caustic\ndreams", p=80},
 	{c=4, n="fortified\nrunes", p=120},
-	{c=11, n="acid", p=130},
+	{c=11, n="oil of\nvitriol", p=130},
 	{c=7, n="moonlight", p=200},
 	{c=17, n="chroma-\ncrystal", p=210},
 	{c=10, n="dreamroot\nspore", p=220},
