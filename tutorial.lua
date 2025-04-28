@@ -34,8 +34,9 @@ tutorial_string =
 
 
 function tutorial_update()
-    if btnp(❎) or mp and tutorial_step < #tutorial_string then
+    if (btnp(❎) or mp) and tutorial_step < #tutorial_string then
         tutorial_step = tutorial_step + 1
+		printh(tutorial_step)
     elseif btnp(🅾️) and tutorial_step > 1 then
         tutorial_step = tutorial_step - 1
 	elseif btnp(❎) and tutorial_step == #tutorial_string then
