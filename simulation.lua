@@ -146,7 +146,8 @@ function update_sim(s)
 						if c==10 then
 							if s.r > 7 then
 								local dx=-1+flr(rnd(3))
-								local dy=1+(-1*flr(rnd(2)))
+								local dy=-1+flr(rnd(3))
+								if y+dy<0 then dy=-dy end
 								local m=s:perm(x,y,x,y+dy) and s:try(x,y,x+dx,y+dy)
 							end
 						-- Random jumping for miasma.
