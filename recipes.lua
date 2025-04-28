@@ -158,7 +158,7 @@ end
 
 -- Draws a single recipe entry.
 function draw_entry(entry, index)
-    local y=index*14
+    local y=index*12
     -- Write ingredient 1.
     rect(30, 15+y, 36, 21+y, 13)
     rectfill(31, 16+y, 35, 20+y, m2c(0,0,entry.c1))

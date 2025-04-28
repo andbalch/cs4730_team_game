@@ -224,11 +224,15 @@ function brew_draw()
 	if transfer_mode=="pour" then
 		oprint("pouring...",88,121,7)
 		if sand_sound_timer<time() then
-			sfx(0)
-			sand_sound_timer=time() + 0.3
+			sfx(17)
+			sand_sound_timer=time() + 0.05
 		end
 	elseif transfer_mode=="collect" then
 		oprint("collecting...",76,121,7)
+		if sand_sound_timer<time() then
+			sfx(18)
+			sand_sound_timer=time() + 0.05
+		end
 	end
 end
 
