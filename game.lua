@@ -103,7 +103,7 @@ tutorial_flag = false
 -- Sets up variables for a game.
 function setup_game()
     -- Game variables.
-    gold=42
+    gold=100
     holding=nil
 	cust=gen_cust()
 	failure_count=0
