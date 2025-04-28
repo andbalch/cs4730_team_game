@@ -180,8 +180,8 @@ function brew_draw()
 	oprint(gold,10,2,10)
 
 	-- Draw rep.
-	oprint("rep",24,2,11)
-	spr(59+failure_count,37,1)
+	oprint("rep",26,2,11)
+	spr(59+failure_count,39,1)
 
 	-- Display current order
 	-- spr(192, 0, 16, 4, 4)
