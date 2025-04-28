@@ -7,7 +7,7 @@ end
 
 function intro_draw()
     draw_bubbles()
-    print("you have inherited the\nstruggling family potion\nbusiness, and have turned it\ninto the first-of-its-kind\npotion drive-through. but to do\nso, you had to take out a shady\nloan... \n\nthe pressure is on to pay back\nthe loan sharks in 5 days. with\nonly 42 gold on-hand, you must\nquickly and accurately conjure\npotions that satisfy your\ncustomers...\n\nget cooking! ❎", 3, y_scroll, 7)
+    print("you have inherited the\nstruggling family potion\nbusiness, and have turned it\ninto the first-of-its-kind\npotion drive-through. but to do\nso, you had to take out a shady\nloan... \n\nwith only 42 gold on-hand, you\nmust quickly and accurately\nconjure potions that satisfy\nyour customers. serving\nincorrect orders will hurt your\nreputation and put you out of\nbusiness...\n\nget cooking! ❎", 3, y_scroll, 7)
     -- print(y_scroll, 116, 122, 12)
 end
 
