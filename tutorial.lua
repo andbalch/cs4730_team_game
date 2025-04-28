@@ -96,7 +96,7 @@ function tutorial_draw()
 	elseif tutorial_step == 22 then
 		rect(52,0,70,6,8)
 	elseif tutorial_step == 23 then
-		rect(23,1,45,8,8)
+		rect(25,1,49,8,8)
 	elseif tutorial_step == 26 then
 		rect(recipes_box.x-1,recipes_box.y-1,recipes_box.x + recipes_box.w,recipes_box.y + recipes_box.h,8)
 	end
