@@ -83,7 +83,7 @@ multicol[16]={8,9,10}
 multicol[17]={2,14,12,11,3}
 
 -- Order variables.
-pot_lim = #potions
+pot_lim = 3
 time_penalty = 0.10
 -- Modify this to change how fast the timer counts down (greater -> faster)!
 time_mod = 1

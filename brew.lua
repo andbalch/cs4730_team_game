@@ -284,9 +284,10 @@ function serve()
 	sell_timer = time() + 0.2
 	-- Empty vial and calc. score
 	-- TODO: inc. points based on potion difficulty?
-	local score = flr(empty_vial(potions[order_i].c) * prices[potions[order_i].c])
+	local acc = empty_vial(potions[order_i].c)
+	local score = flr(acc * prices[potions[order_i].c])
 
-	if score < 10 then
+	if acc < 0.5 then
 		sfx(2)
 		failure_count = failure_count + 1
 		if failure_count >= 5 then
@@ -299,6 +300,12 @@ function serve()
 		if failure_count < 0 then
 			failure_count = 0
 		end
+		-- Allow increases in difficulty
+		if pot_lim < #potions then
+			pot_lim = pot_lim + 1
+		end
+		-- Reduce time limit.
+		time_lim = max(flr(time_lim * 0.9), 20)
 	end
 	sell_sound_timer = time() + 0.5
 
@@ -322,9 +329,6 @@ function serve()
 	-- Set timer
 	-- TODO: variable time limits?
 	pot_timer = t()
-
-	-- Reduce time limit.
-	time_lim = max(flr(time_lim * 0.9), 20)
 
 	-- TODO: New wizard?
 end
