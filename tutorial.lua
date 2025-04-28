@@ -52,7 +52,7 @@ function tutorial_progress()
 						tutorial_step == 16 or
 						tutorial_step == 19 or
 						tutorial_step == 20 or
-						tutorial_step == 25
+						tutorial_step == 26
 		if (mp and click_progress) or (btnp(❎) and not click_progress) then
 			tutorial_step = tutorial_step + 1
 		end
