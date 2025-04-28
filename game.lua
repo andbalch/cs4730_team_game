@@ -84,7 +84,6 @@ multicol[17]={2,14,12,11,3}
 
 -- Order variables.
 pot_lim = #potions
-time_lim = 60
 time_penalty = 0.10
 -- Modify this to change how fast the timer counts down (greater -> faster)!
 time_mod = 1
@@ -108,6 +107,7 @@ function setup_game()
     holding=nil
 	cust=gen_cust()
 	failure_count=0
+	time_lim = 60
 
 	-- Vial variables.
 	vox=0 -- Vial offset from the mouse.
