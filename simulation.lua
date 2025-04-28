@@ -1,4 +1,4 @@
-density={0,10,8,20,4,20,1,12,11,9,2,5,5,99,20,10,10,50,0}
+density={0,10,8,20,4,20,1,12,11,9,2,19,5,99,20,10,10,50,0}
 
 function create_sim(x,y,w,h)
 	-- Make 2D buffer.
@@ -184,7 +184,6 @@ function update_sim(s)
 									local nc=s:g(x+dx,y+dy)	
 									if sc==0 and nc~=13 and nc~=6 and nc~=16 then 
 										s:s(x+dx,y+dy,16)
-										discover(16,nc,16)
 									end
 								end
 							end
@@ -345,7 +344,7 @@ end
 
 -- Returns if a material is acid-proof.
 function acid_proof(c) 
-	return c==11 or c==9 or c==8 or c==6 or c==7 
+	return c==9 or c==8 or c==6 or c==7 
 end
 
 -- Helper code to check if some combination of c1 and c2 are equal to v1 and v2

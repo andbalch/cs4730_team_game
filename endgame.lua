@@ -28,7 +28,7 @@ function failure_draw()
     
     print("your reputation is ruined", 16, 40, 8)
     print("no one comes to", 33, 50, 10)
-    print("buy your potion", 33, 60, 10)
+    print("buy your potions", 31, 60, 10)
     print("press    to restart", 25, 80, 6)
     print("❎", 49, 80, 11)
 end
