@@ -9,7 +9,7 @@
 
 ## Game Title
 
-Hokey Pokey Potion Place
+Hoki Poki Potion Place
 
 ## GitHub Repo Link
 
@@ -25,7 +25,7 @@ The game is controlled largely through pointing and clicking with the cursor, so
 
 ## Available Content
 
-We designed 16 different potions coming from >10 possible reactions! These potions have varying levels of difficulty to make, and some of them have very interesting properties that could help you or cause you trouble. Basically, there’s only one mission – collect 2000 gold, but it’s also fun to ignore all orders and just try and make more kinds of potions!
+We designed 15 different ingredients that combine to produce >10 possible potions and reactions! These potions have varying levels of difficulty to make, and some of them have very interesting properties that could help you or cause you trouble. Basically, there’s only one mission – collect 2000 gold, but it’s also fun to ignore all orders and just try and make more kinds of potions! As you successfully fulfill orders, the game difficulty increases by decreasing the time limit and allowing customers to order more complex potions. All potion orders are possible only after customers are served successfully 9 times, but they can be discovered at any point!
 
 Below are a few tips for playing (Don’t look at this if you just want to enjoy the game!):
 
@@ -34,6 +34,7 @@ Below are a few tips for playing (Don’t look at this if you just want to enjoy
 3. Fenwick Tree can be made by Dragon’s blood and Fairy Dust, and can be dissolved by water. It GROWS!
 4. Dreamroot Spore is made of Fenwick Tree and Caustic Dreams (Sweat of Newt + Fairy Dust). It floats around and is hard to get rid of!
 5. Flipping the cauldrons is helpful, not only for clearing the potions inside.
+6. Some reactions are explosive! Be careful not to mix Water and Fairy Dust…
 
 ## Lessons Learned
 
